@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Bullet : MonoBehaviourPun
 {
@@ -10,6 +11,19 @@ public class Bullet : MonoBehaviourPun
     public float destroyTime = 2;
 
     public bool isLeft;
+
+    public float bulletDamage = 0.3f;
+
+    public string killerName;
+    public GameObject localPlayerObj;
+
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            killerName = localPlayerObj.GetComponent<Cowboy>().playerName;
+        }
+    }
 
     IEnumerator DestroyBullet()
     {
@@ -48,6 +62,18 @@ public class Bullet : MonoBehaviourPun
 
         if (target != null && (!target.IsMine || target.IsRoomView))
         {
+            if(target.CompareTag("Player"))
+            {
+                target.RPC("HealthUpdate", RpcTarget.AllBuffered, bulletDamage);
+                target.GetComponent<HurtEffect>().OnHit();
+
+                if(target.GetComponent<Health>().health <= 0)
+                {
+                    Player killedPlayer = target.Owner;
+                    target.RPC("KilledBy", killedPlayer, killerName);
+                    target.RPC("YouKilled", localPlayerObj.GetComponent<PhotonView>().Owner, killedPlayer.NickName);
+                }
+            }
             this.GetComponent<PhotonView>().RPC("Destroy", RpcTarget.AllBuffered);
         }
     }

@@ -43,6 +43,13 @@ MonoBehaviour:
   - FlipSprite_Right
   - Destroy
   - SetIsLeft
+  - HealthUpdate
+  - CheckHealth
+  - OnDeath
+  - Revive
+  - KilledBy
+  - YouKilled
+  - UpdatePlayerList
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
