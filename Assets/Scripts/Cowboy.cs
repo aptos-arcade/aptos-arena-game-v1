@@ -43,8 +43,8 @@ public class Cowboy : MonoBehaviourPun
             GameManager.instance.localPlayer = this.gameObject;
             playerCamera.SetActive(true);
             playerCamera.transform.SetParent(null, false);
-            playerText.text = "You: " + PhotonNetwork.NickName;
-            playerText.color = Color.green;
+            playerText.text = PhotonNetwork.NickName;
+            playerText.color = new Color(0.6588235f, 0.8078431f, 1f);
             playerName = PhotonNetwork.NickName;
         }
         else

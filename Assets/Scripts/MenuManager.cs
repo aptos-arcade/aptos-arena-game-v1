@@ -15,9 +15,7 @@ public class MenuManager : MonoBehaviourPunCallbacks
     GameObject CreateUserNameButton;
 
     [SerializeField]
-    TMP_InputField UserNameInput, CreateRoomInput, JoinRoomInput;
-
-
+    TMP_InputField UserNameInput, CreateRoomInput;
 
     private void Awake()
     {
@@ -55,24 +53,17 @@ public class MenuManager : MonoBehaviourPunCallbacks
     {
         if(UserNameInput.text.Length >= 2)
         {
-            CreateUserNameButton.SetActive(true);
+            CreateUserNameButton.GetComponent<Button>().interactable = true;
         }
         else
         {
-            CreateUserNameButton.SetActive(false);
+            CreateUserNameButton.GetComponent<Button>().interactable = false;
         }
     }
 
     public void OnClickCreateRoom()
     {
         PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, null);
-    }
-
-    public void OnClickJoinRoom()
-    {
-        RoomOptions ro = new RoomOptions();
-        ro.MaxPlayers = 4;
-        PhotonNetwork.JoinOrCreateRoom(JoinRoomInput.text, ro, TypedLobby.Default);
     }
 
     #endregion
