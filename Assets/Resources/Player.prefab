@@ -257,7 +257,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 9198527194cefbb43b66d0cb14cd4f5c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -392,8 +392,8 @@ MonoBehaviour:
   followDistance: 0
   target: {fileID: 1787395700553035275}
   offset: {x: 1.3, y: 1.5, z: 0}
-  MinBoundary: {x: -23.33, y: 0}
-  MaxBoundary: {x: 23.33, y: 0}
+  MinBoundary: {x: -13.05, y: 0}
+  MaxBoundary: {x: 13.11, y: 0}
 --- !u!1 &1787395700553035275
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,7 +451,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.34476894, y: -0.21861249}
+  m_Offset: {x: 0.36781108, y: -0.15463352}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -462,7 +462,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0061017, y: 1.3749279}
+  m_Size: {x: 1.1677749, y: 1.3679819}
   m_EdgeRadius: 0
 --- !u!50 &1787395700553035278
 Rigidbody2D:
@@ -500,15 +500,14 @@ MonoBehaviour:
   playerCamera: {fileID: 1787395700197994217}
   sprite: {fileID: 1787395699856598911}
   anim: {fileID: 1787395699856598910}
-  movementSpeed: 5
+  movementSpeed: 7.5
   pv: {fileID: 5917113708880333445}
   bulletPrefab: {fileID: 7682458169019710666, guid: 541e8ef161f8d42c69435927d987ea66, type: 3}
   bulletSpawnPointRight: {fileID: 6819310300024619089}
   bulletSpawnPointLeft: {fileID: 1498670364155248712}
   playerText: {fileID: 5319005287488380675}
   inputsDisabled: 0
-  isGrounded: 0
-  jumpForce: 750
+  jumpForce: 20
   playerName: 
 --- !u!114 &5917113708880333445
 MonoBehaviour:

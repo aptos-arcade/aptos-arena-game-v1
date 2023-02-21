@@ -9,13 +9,15 @@ using TMPro;
 public class MenuManager : MonoBehaviourPunCallbacks
 {
     [SerializeField]
-    GameObject UserNameScreen, ConnectScreen;
+    GameObject ConnectingScreen, UserNameScreen, ConnectScreen;
 
     [SerializeField]
     GameObject CreateUserNameButton;
 
     [SerializeField]
     TMP_InputField UserNameInput, CreateRoomInput, JoinRoomInput;
+
+
 
     private void Awake()
     {
@@ -31,6 +33,7 @@ public class MenuManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Connected to Lobby");
+        ConnectingScreen.SetActive(false);
         UserNameScreen.SetActive(true);
     }
 

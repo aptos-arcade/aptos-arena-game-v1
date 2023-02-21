@@ -55,7 +55,7 @@ public class Health : MonoBehaviourPun
     [PunRPC]
     public void Revive()
     {
-        rb.gravityScale = 1;
+        rb.gravityScale = 5;
         bc.enabled = true;
         sr.enabled = true;
         playerCanvas.SetActive(true);
@@ -68,7 +68,7 @@ public class Health : MonoBehaviourPun
     {
         GameObject go = Instantiate(killFeedTextPrefab, new Vector2(0, 0), Quaternion.identity);
         go.transform.SetParent(GameManager.instance.killFeedBox.transform);
-        go.GetComponent<TMP_Text>().text = "You got killed by " + name;
+        go.GetComponent<TMP_Text>().text = "You got killed by: " + name;
         go.GetComponent<TMP_Text>().color = Color.red;
         Destroy(go, 3);
     }
@@ -78,7 +78,7 @@ public class Health : MonoBehaviourPun
     {
         GameObject go = Instantiate(killFeedTextPrefab, new Vector2(0, 0), Quaternion.identity);
         go.transform.SetParent(GameManager.instance.killFeedBox.transform);
-        go.GetComponent<TMP_Text>().text = "You killed by " + name;
+        go.GetComponent<TMP_Text>().text = "You killed: " + name;
         go.GetComponent<TMP_Text>().color = Color.green;
         Destroy(go, 3);
     }

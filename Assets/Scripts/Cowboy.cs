@@ -28,9 +28,8 @@ public class Cowboy : MonoBehaviourPun
 
     public bool inputsDisabled = false;
 
-    public bool isGrounded = false;
-
     private Rigidbody2D rb;
+    private BoxCollider2D bc;
 
     public float jumpForce;
 
@@ -58,6 +57,7 @@ public class Cowboy : MonoBehaviourPun
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        bc = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -65,57 +65,50 @@ public class Cowboy : MonoBehaviourPun
     {
         if (photonView.IsMine && !inputsDisabled)
         {
-            CheckInputs();
+            UpdateMovement();
+            UpdateAnimation();
+            CheckShoot();
         }
     }
 
-    private void CheckInputs()
+    void UpdateMovement()
     {
-        if(canMove)
+        float horizontalVelocity = 0;
+        float verticalVelocity = rb.velocity.y;
+        if (canMove)
         {
-            var movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0);
-            transform.position += movementSpeed * Time.deltaTime * movement;
+            horizontalVelocity = Input.GetAxisRaw("Horizontal") * movementSpeed;
         }
-
-        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.UpArrow) && IsGrounded())
         {
-            anim.SetBool("IsMoving", true);
+            verticalVelocity = jumpForce;
         }
+        rb.velocity = new Vector2(horizontalVelocity, verticalVelocity);
+    }
 
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+    void UpdateAnimation()
+    {
+        anim.SetBool("IsMoving", Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow));
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        if (horizontalInput != 0 && !anim.GetBool("isShooting"))
         {
-            Jump();
+            playerCamera.GetComponent<CameraFollow2D>().offset = new Vector3(horizontalInput * 1.3f, 1.5f, 0);
+            if (horizontalInput > 0) pv.RPC("FlipSprite_Right", RpcTarget.AllBuffered);
+            else pv.RPC("FlipSprite_Left", RpcTarget.AllBuffered);
         }
+    }
 
-        if(Input.GetKeyDown(KeyCode.RightShift) && !anim.GetBool("IsMoving"))
+    void CheckShoot()
+    {
+        if (Input.GetKeyDown(KeyCode.RightShift) && !anim.GetBool("IsMoving"))
         {
+            canMove = false;
             Shoot();
         }
-        else if(Input.GetKeyUp(KeyCode.RightShift))
+        else if (Input.GetKeyUp(KeyCode.RightShift))
         {
-            anim.SetBool("isShooting", false);
             canMove = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.D) && !anim.GetBool("isShooting"))
-        {
-            playerCamera.GetComponent<CameraFollow2D>().offset = new Vector3(1.3f, 1.5f, 0);
-            pv.RPC("FlipSprite_Right", RpcTarget.AllBuffered);
-            
-        }
-        else if (Input.GetKeyUp(KeyCode.D))
-        {
-            anim.SetBool("IsMoving", false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.A) && !anim.GetBool("isShooting"))
-        {
-            playerCamera.GetComponent<CameraFollow2D>().offset = new Vector3(-1.3f, 1.5f, 0);
-            pv.RPC("FlipSprite_Left", RpcTarget.AllBuffered);
-        }
-        else if (Input.GetKeyUp(KeyCode.A))
-        {
-            anim.SetBool("IsMoving", false);
+            anim.SetBool("isShooting", false);
         }
     }
 
@@ -133,7 +126,6 @@ public class Cowboy : MonoBehaviourPun
             bullet.GetComponent<Bullet>().localPlayerObj = this.gameObject;
         }
         anim.SetBool("isShooting", true);
-        canMove = false;
     }
 
     [PunRPC]
@@ -148,25 +140,8 @@ public class Cowboy : MonoBehaviourPun
         sprite.flipX = true;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    bool IsGrounded()
     {
-        if(collision.gameObject.tag == "Ground")
-        {
-            isGrounded = true;
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            isGrounded = false;
-        }
-    }
-
-    void Jump()
-    {
-        Debug.Log("Jump");
-        rb.AddForce(new Vector2(0, jumpForce));
+        return Physics2D.Raycast(transform.position, Vector2.down, bc.bounds.extents.y + 0.5f);
     }
 }

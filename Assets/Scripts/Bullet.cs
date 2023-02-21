@@ -48,30 +48,30 @@ public class Bullet : MonoBehaviourPun
     {
         isLeft = true;
     }
+
     [PunRPC]
     void Destroy()
     {
-        Destroy(this.gameObject);
+        PhotonNetwork.Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!photonView.IsMine) return;
 
-        PhotonView target = collision.gameObject.GetComponent<PhotonView>();
-
-        if (target != null && (!target.IsMine || target.IsRoomView))
+        PhotonView collisionPhotonView = collision.gameObject.GetComponent<PhotonView>();
+        if (collisionPhotonView != null && (!collisionPhotonView.IsMine || collisionPhotonView.IsRoomView))
         {
-            if(target.CompareTag("Player"))
+            if(collisionPhotonView.CompareTag("Player"))
             {
-                target.RPC("HealthUpdate", RpcTarget.AllBuffered, bulletDamage);
-                target.GetComponent<HurtEffect>().OnHit();
+                collisionPhotonView.RPC("HealthUpdate", RpcTarget.AllBuffered, bulletDamage);
+                collisionPhotonView.GetComponent<HurtEffect>().OnHit();
 
-                if(target.GetComponent<Health>().health <= 0)
+                if(collisionPhotonView.GetComponent<Health>().health <= 0)
                 {
-                    Player killedPlayer = target.Owner;
-                    target.RPC("KilledBy", killedPlayer, killerName);
-                    target.RPC("YouKilled", localPlayerObj.GetComponent<PhotonView>().Owner, killedPlayer.NickName);
+                    Player killedPlayer = collisionPhotonView.Owner;
+                    collisionPhotonView.RPC("KilledBy", killedPlayer, killerName);
+                    collisionPhotonView.RPC("YouKilled", localPlayerObj.GetComponent<PhotonView>().Owner, killedPlayer.NickName);
                 }
             }
             this.GetComponent<PhotonView>().RPC("Destroy", RpcTarget.AllBuffered);
