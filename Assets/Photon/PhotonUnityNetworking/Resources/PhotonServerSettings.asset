@@ -50,6 +50,11 @@ MonoBehaviour:
   - KilledBy
   - YouKilled
   - UpdatePlayerList
+  - SetDirection
+  - TrySwapWeapon
+  - Equip
+  - Unequip
+  - OnRevive
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

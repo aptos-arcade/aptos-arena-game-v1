@@ -7,11 +7,8 @@ using Photon.Realtime;
 public class Bullet : MonoBehaviourPun
 {
     public float speed = 8;
-
     public float destroyTime = 2;
-
     public bool isLeft;
-
     public float bulletDamage = 0.3f;
 
     public string killerName;
