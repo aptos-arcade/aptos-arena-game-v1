@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerUtilities
@@ -17,13 +18,14 @@ public class PlayerUtilities
         commands.Add(new WeaponSwapCommand(player, WEAPON.FISTS, KeyCode.Alpha1));
         commands.Add(new WeaponSwapCommand(player, WEAPON.GUN, KeyCode.Alpha2));
         commands.Add(new WeaponSwapCommand(player, WEAPON.SWORD, KeyCode.Alpha3));
+        commands.Add(new DropCommand(player, KeyCode.DownArrow));
     }
 
     public void HandleInput()
     {
-        if(player.PlayerComponents.PhotonView.IsMine)
+        if(player.PlayerComponents.PhotonView.IsMine && player.PlayerStats.CanMove)
         {
-            player.PlayerStats.Direction = new Vector2(Input.GetAxisRaw("Horizontal"), player.PlayerComponents.RigidBody.velocity.y);
+            player.PlayerStats.Direction = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
 
             foreach (Command command in commands)
             {
@@ -47,13 +49,17 @@ public class PlayerUtilities
 
     public bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(
-            player.transform.position,
-            Vector2.down,
-            player.PlayerComponents.Collider.bounds.extents.y + 0.2f,
-            player.PlayerComponents.Ground
-        );
-        return hit.collider != null;
+        return IsOnGround() || IsOnPlatform();
+    }
+
+    public bool IsOnGround()
+    {
+        return player.PlayerComponents.RigidBody.IsTouchingLayers(player.PlayerComponents.Ground.value);
+    }
+
+    public bool IsOnPlatform()
+    {
+        return player.PlayerComponents.RigidBody.IsTouchingLayers(player.PlayerComponents.Platform.value);
     }
 
     public void HandleAir()
@@ -63,10 +69,34 @@ public class PlayerUtilities
             player.PlayerComponents.Animator.TryPlayAnimation("Body_Fall");
             player.PlayerComponents.Animator.TryPlayAnimation("Legs_Fall");
         }
+        if(IsGrounded())
+        {
+            player.PlayerStats.CanDoubleJump = true;
+        }
     }
 
     public bool IsFalling()
     {
         return player.PlayerComponents.RigidBody.velocity.y < 0 && !IsGrounded();
+    }
+
+    public void HandleStrike(Vector2 direction, float knockback, float damage)
+    {
+        StartHurt();
+        player.PlayerComponents.RigidBody.AddForce(direction.normalized * knockback * Mathf.Pow(player.PlayerStats.DamageMultiplier, player.PlayerStats.KnockbackPower));
+        player.PlayerStats.DamageMultiplier += damage;
+        player.PlayerReferences.DamageDisplay.text = ((player.PlayerStats.DamageMultiplier - 1) * 100).ToString("F0") + "%";
+    }
+
+    public void StartHurt()
+    {
+        player.PlayerComponents.Renderer.color = Color.red;
+        player.PlayerComponents.BodyCollider.enabled = false;
+    }
+
+    public void EndHurt()
+    {
+        player.PlayerComponents.Renderer.color = Color.white;
+        player.PlayerComponents.BodyCollider.enabled = true;
     }
 }

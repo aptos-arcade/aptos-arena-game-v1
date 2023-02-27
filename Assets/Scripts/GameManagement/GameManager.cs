@@ -70,16 +70,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void SpawnPlayer()
     {
-        float randomValue = Random.Range(-3, 3);
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, 10), Quaternion.identity, 0);
+        float randomValue = Random.Range(-4, 4);
+        PhotonNetwork.Instantiate(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, 6), Quaternion.identity, 0);
         canvas.SetActive(false);
         sceneCamera.SetActive(false);
     }
 
     public void RelocatePlayer()
     {
-        float randomPos = Random.Range(-3, 3);
-        localPlayer.transform.localPosition = new Vector2(randomPos, 2);
+        float randomPos = Random.Range(-4, 4);
+        localPlayer.transform.localPosition = new Vector2(randomPos, 6);
     }
 
     void StartRespawn()
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             RelocatePlayer();
             respawnUI.SetActive(false);
             startRespawn = false;
-            localPlayer.GetComponent<PlayerScript>().PlayerReferences.HealthBar.GetComponent<PhotonView>().RPC("Revive", RpcTarget.AllBuffered);
+            localPlayer.GetComponent<PlayerScript>().photonView.RPC("OnRevive", RpcTarget.AllBuffered);
         }
     }
 

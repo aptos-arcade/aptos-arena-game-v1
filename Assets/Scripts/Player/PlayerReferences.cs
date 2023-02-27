@@ -29,7 +29,7 @@ public class PlayerReferences
     private TMP_Text nametag;
 
     [SerializeField]
-    private GameObject healthBar;
+    private TMP_Text damageDisplay;
 
     public GameObject[] WeaponObjects { get => weaponObjects; }
     public GameObject ProjectilePrefab { get => projectilePrefab; }
@@ -38,5 +38,5 @@ public class PlayerReferences
     public GameObject KillFeedPrefab { get => killFeedPrefab; }
     public GameObject PlayerCamera { get => playerCamera; set => playerCamera = value; }
     public TMP_Text Nametag { get => nametag; set => nametag = value; }
-    public GameObject HealthBar { get => healthBar; set => healthBar = value; }
+    public TMP_Text DamageDisplay { get => damageDisplay; set => damageDisplay = value; }
 }

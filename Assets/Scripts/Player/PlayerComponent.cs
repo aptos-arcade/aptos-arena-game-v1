@@ -10,13 +10,19 @@ public class PlayerComponent
     private Rigidbody2D rigidBody;
 
     [SerializeField]
-    private Collider2D collider;
+    private BoxCollider2D footCollider;
+
+    [SerializeField]
+    private PolygonCollider2D bodyCollider;
 
     [SerializeField]
     private AnyStateAnimator animator;
 
     [SerializeField]
     private LayerMask ground;
+
+    [SerializeField]
+    private LayerMask platform;
 
     [SerializeField]
     private PhotonView photonView;
@@ -30,9 +36,13 @@ public class PlayerComponent
 
     public LayerMask Ground { get => ground; }
 
-    public Collider2D Collider { get => collider; }
+    public Collider2D FootCollider { get => footCollider; }
+
+    public PolygonCollider2D BodyCollider { get => bodyCollider; set => bodyCollider = value; }
 
     public PhotonView PhotonView { get => photonView; set => photonView = value; }
 
     public SpriteRenderer Renderer { get => renderer; set => renderer = value; }
+
+    public LayerMask Platform { get => platform; }
 }

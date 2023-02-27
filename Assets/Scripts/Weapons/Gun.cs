@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Gun : MonoBehaviourPun, IWeapon
+public class Gun : Weapon
 {
-    [PunRPC]
-    public void Equip()
+    public void Shoot()
     {
-        this.gameObject.SetActive(true);
-    }
 
-    [PunRPC]
-    public void Unequip()
-    {
-        this.gameObject.SetActive(false);
     }
 }

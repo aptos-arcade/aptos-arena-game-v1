@@ -16,10 +16,11 @@ public class PlayerActions
 
     public void Move(Transform transform)
     {
-        player.PlayerComponents.RigidBody.velocity = new Vector2(
-            player.PlayerStats.Direction.x * player.PlayerStats.Speed * Time.deltaTime,
-            player.PlayerComponents.RigidBody.velocity.y
-        );
+        float targetSpeed = player.PlayerStats.Direction.x * player.PlayerStats.Speed;
+        float speedDiff = targetSpeed - player.PlayerComponents.RigidBody.velocity.x;
+        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? player.PlayerStats.Acceleration : player.PlayerStats.Decceleration;
+        float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, player.PlayerStats.VelPower) * Mathf.Sign(speedDiff);
+        player.PlayerComponents.RigidBody.AddForce(movement * Vector2.right);
 
         if(player.PlayerStats.Direction.x != 0)
         {
@@ -41,9 +42,15 @@ public class PlayerActions
     {
         if (player.PlayerUtilities.IsGrounded())
         {
-            player.PlayerComponents.RigidBody.velocity = new Vector2(player.PlayerComponents.RigidBody.velocity.x, player.PlayerStats.JumpForce);
+            player.PlayerComponents.RigidBody.AddForce(new Vector2(0, player.PlayerStats.JumpForce));
             player.PlayerComponents.Animator.TryPlayAnimation("Legs_Jump");
             player.PlayerComponents.Animator.TryPlayAnimation("Body_Jump");
+        }
+        else if(player.PlayerStats.CanDoubleJump)
+        {
+            player.PlayerComponents.RigidBody.velocity = new Vector2(player.PlayerComponents.RigidBody.velocity.x, 0);
+            player.PlayerComponents.RigidBody.AddForce(new Vector2(0, player.PlayerStats.DoubleJumpForce));
+            player.PlayerStats.CanDoubleJump = false;
         }
     }
 
@@ -76,9 +83,21 @@ public class PlayerActions
         }
     }
 
+    public void Drop()
+    {
+        player.PlayerComponents.FootCollider.enabled = false;
+        player.StartCoroutine(ResetFeet());
+    }
+
+    IEnumerator ResetFeet()
+    {
+        yield return new WaitForSeconds(0.25f);
+        player.PlayerComponents.FootCollider.enabled = true;
+    }
+
     public void Shoot(string animation)
     {
-        if(animation == "Shoot")
+        if(animation == "Shoot" && player.photonView.IsMine)
         {
             GameObject projectile = PhotonNetwork.Instantiate(player.PlayerReferences.ProjectilePrefab.name, player.PlayerReferences.GunBarrel.position, Quaternion.identity);
             projectile.GetComponent<Projectile>().localPlayerObj = player.gameObject;

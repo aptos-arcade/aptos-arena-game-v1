@@ -34,13 +34,15 @@ public class PlayerScript : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            GameManager.instance.localPlayer = this.gameObject;
+            if(GameManager.instance)
+            {
+                GameManager.instance.localPlayer = this.gameObject;
 
-            playerReferences.PlayerCamera.SetActive(true);
-            playerReferences.PlayerCamera.transform.SetParent(null, false);
-            playerReferences.Nametag.text = PhotonNetwork.NickName;
-            playerReferences.Nametag.color = new Color(0.6588235f, 0.8078431f, 1f);
-
+                playerReferences.PlayerCamera.SetActive(true);
+                playerReferences.PlayerCamera.transform.SetParent(null, false);
+                playerReferences.Nametag.text = PhotonNetwork.NickName;
+                playerReferences.Nametag.color = new Color(0.6588235f, 0.8078431f, 1f);
+            }
         }
         else
         {
@@ -54,6 +56,7 @@ public class PlayerScript : MonoBehaviourPun
     // Start is called before the first frame update
     private void Start()
     {
+        Debug.Log("Start");
         playerActions = new PlayerActions(this);
         playerUtilities = new PlayerUtilities(this);
 
@@ -65,7 +68,7 @@ public class PlayerScript : MonoBehaviourPun
             new AnyStateAnimation(RIG.BODY, "Body_Idle", "Body_Attack"),
             new AnyStateAnimation(RIG.BODY, "Body_Walk", "Body_Attack", "Body_Jump"),
             new AnyStateAnimation(RIG.BODY, "Body_Jump"),
-            new AnyStateAnimation(RIG.BODY, "Body_Fall"),
+            new AnyStateAnimation(RIG.BODY, "Body_Fall", "Body_Attack"),
             new AnyStateAnimation(RIG.BODY, "Body_Attack"),
 
             new AnyStateAnimation(RIG.LEGS, "Legs_Idle", "Legs_Attack"),
@@ -77,6 +80,8 @@ public class PlayerScript : MonoBehaviourPun
 
         playerComponent.Animator.AnimationTriggerEvent += PlayerActions.Shoot;
         playerComponent.Animator.AddAnimations(animations);
+
+        playerReferences.DamageDisplay.text = "0%";
     }
 
     // Update is called once per frame
@@ -84,10 +89,10 @@ public class PlayerScript : MonoBehaviourPun
     {
         PlayerUtilities.HandleInput();
         PlayerUtilities.HandleAir();
-        if(transform.position.y < -10)
+        if(Mathf.Abs(transform.position.x) > 26 || Mathf.Abs(transform.position.y) > 14)
         {
             transform.position = new Vector3(0, 0, 0);
-            playerReferences.HealthBar.GetComponent<PlayerHealth>().OnDeath();
+            OnDeath();
         }
     }
 
@@ -96,15 +101,25 @@ public class PlayerScript : MonoBehaviourPun
         PlayerActions.Move(transform);
     }
 
-    [PunRPC]
     public void OnDeath()
     {
+        GameManager.instance.EnableRespawn();
+        photonView.RPC("ShowDeath", RpcTarget.AllBuffered);
+    }
+
+
+    [PunRPC]
+    public void ShowDeath()
+    {
+        
         playerActions.TrySwapWeapon(WEAPON.FISTS);
 
         playerComponent.RigidBody.velocity = Vector2.zero;
         playerComponent.RigidBody.gravityScale = 0;
-        playerComponent.Collider.enabled = false;
+        playerComponent.FootCollider.enabled = false;
         playerComponent.Renderer.enabled = false;
+
+        playerStats.CanMove = false;
 
         playerReferences.PlayerCanvas.SetActive(false);
     }
@@ -113,9 +128,32 @@ public class PlayerScript : MonoBehaviourPun
     public void OnRevive()
     {
         playerComponent.RigidBody.gravityScale = 5;
-        playerComponent.Collider.enabled = true;
+        playerComponent.FootCollider.enabled = true;
         playerComponent.Renderer.enabled = true;
 
+        playerStats.CanMove = true;
+        playerStats.DamageMultiplier = 1;
+
+        playerReferences.DamageDisplay.text = "0%";
         playerReferences.PlayerCanvas.SetActive(true);
+    }
+
+    [PunRPC]
+    public void OnStrike(Vector2 direction, float knockback, float damage)
+    {
+        playerUtilities.HandleStrike(direction, knockback, damage);
+        StartCoroutine(HurtCoroutine());
+    }
+
+    [PunRPC]
+    public void EndHurt()
+    {
+        playerUtilities.EndHurt();
+    }
+
+    IEnumerator HurtCoroutine()
+    {
+        yield return new WaitForSeconds(0.25f);
+        playerComponent.PhotonView.RPC("EndHurt", RpcTarget.AllBuffered);
     }
 }

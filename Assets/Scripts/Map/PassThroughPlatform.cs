@@ -4,45 +4,42 @@ using UnityEngine;
 
 public class PassThroughPlatform : MonoBehaviour
 {
-    private Collider2D _collider;
-    private bool _playerOnPlatform;
+    //private bool _playerOnPlatform;
 
-    private void Start()
-    {
-        _collider = GetComponent<Collider2D>();
-    }
+    //private PlayerScript player;
 
-    private void Update()
-    {
-        if(_playerOnPlatform && Input.GetAxisRaw("Vertical") < 0)
-        {
-            _collider.enabled = false;
-            StartCoroutine(EnableCollider());
-        }
-    }
+    //private void Update()
+    //{
+    //    if(_playerOnPlatform && Input.GetAxisRaw("Vertical") < 0)
+    //    {
+    //        player.PlayerComponents.FootCollider.enabled = false;
+    //        StartCoroutine(EnableCollider());
+    //    }
+    //}
 
-    IEnumerator EnableCollider()
-    {
-        yield return new WaitForSeconds(0.25f);
-        _collider.enabled = true;
-    }
+    //IEnumerator EnableCollider()
+    //{
+    //    yield return new WaitForSeconds(0.25f);
+    //    player.PlayerComponents.FootCollider.enabled = true;
+    //}
 
-    private void SetPlayerOnPlatform(Collision2D collision, bool value)
-    {
-        var player = collision.gameObject.GetComponent<PlayerScript>();
-        if(player != null)
-        {
-            _playerOnPlatform = true;
-        }
-    }
+    //private void SetPlayerOnPlatform(Collision2D collision, bool value)
+    //{
+    //    var player = collision.gameObject.GetComponent<PlayerScript>();
+    //    if(player != null)
+    //    {
+    //        this.player = player;
+    //        _playerOnPlatform = true;
+    //    }
+    //}
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        SetPlayerOnPlatform(collision, true);
-    }
+    //void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    SetPlayerOnPlatform(collision, true);
+    //}
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        SetPlayerOnPlatform(collision, false);
-    }
+    //private void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    SetPlayerOnPlatform(collision, false);
+    //}
 }
