@@ -31,7 +31,7 @@ public class PlayerActions
             player.PlayerComponents.Animator.TryPlayAnimation("Legs_Walk");
 
         }
-        else if(player.PlayerComponents.RigidBody.velocity == Vector2.zero)
+        else if(player.PlayerComponents.RigidBody.velocity.magnitude < 0.01f)
         {
             player.PlayerComponents.Animator.TryPlayAnimation("Body_Idle");
             player.PlayerComponents.Animator.TryPlayAnimation("Legs_Idle");

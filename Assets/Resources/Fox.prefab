@@ -471,6 +471,7 @@ MonoBehaviour:
     playerCamera: {fileID: 1856515762}
     nametag: {fileID: 10875486}
     damageDisplay: {fileID: 3886122079697844527}
+    explosionPrefab: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
 --- !u!50 &3996125493551302196
 Rigidbody2D:
   serializedVersion: 4

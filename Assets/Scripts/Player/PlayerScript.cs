@@ -19,15 +19,12 @@ public class PlayerScript : MonoBehaviourPun
     private PlayerUtilities playerUtilities;
 
     private PlayerActions playerActions;
-
-    private PlayerHealth playerHealth;
-
+    
     public PlayerComponent PlayerComponents { get => playerComponent; }
     public PlayerStats PlayerStats { get => playerStats; }
     public PlayerActions PlayerActions { get => playerActions; }
     public PlayerUtilities PlayerUtilities { get => playerUtilities; }
     public PlayerReferences PlayerReferences { get => playerReferences; }
-    public PlayerHealth PlayerHealth { get => playerHealth; }
 
     // Start is called before the first frame update
     void Awake()
@@ -89,11 +86,8 @@ public class PlayerScript : MonoBehaviourPun
     {
         PlayerUtilities.HandleInput();
         PlayerUtilities.HandleAir();
-        if(Mathf.Abs(transform.position.x) > 26 || Mathf.Abs(transform.position.y) > 14)
-        {
-            transform.position = new Vector3(0, 0, 0);
-            OnDeath();
-        }
+        if (!photonView.IsMine || !(Mathf.Abs(transform.position.x) > 30) && !(Mathf.Abs(transform.position.y) > 16) || !playerStats.CanMove) return;
+        OnDeath();
     }
 
     void FixedUpdate()
@@ -101,8 +95,9 @@ public class PlayerScript : MonoBehaviourPun
         PlayerActions.Move(transform);
     }
 
-    public void OnDeath()
+    private void OnDeath()
     {
+        GameObject explosion = PhotonNetwork.Instantiate(playerReferences.ExplosionPrefab.name, transform.position, Quaternion.identity);
         GameManager.instance.EnableRespawn();
         photonView.RPC("ShowDeath", RpcTarget.AllBuffered);
     }
@@ -111,7 +106,6 @@ public class PlayerScript : MonoBehaviourPun
     [PunRPC]
     public void ShowDeath()
     {
-        
         playerActions.TrySwapWeapon(WEAPON.FISTS);
 
         playerComponent.RigidBody.velocity = Vector2.zero;
@@ -119,6 +113,7 @@ public class PlayerScript : MonoBehaviourPun
         playerComponent.FootCollider.enabled = false;
         playerComponent.Renderer.enabled = false;
 
+        playerStats.Direction = Vector2.zero;
         playerStats.CanMove = false;
 
         playerReferences.PlayerCanvas.SetActive(false);
@@ -127,6 +122,9 @@ public class PlayerScript : MonoBehaviourPun
     [PunRPC]
     public void OnRevive()
     {
+        float randomPos = Random.Range(-4, 4);
+        transform.localPosition = new Vector2(randomPos, 6);
+
         playerComponent.RigidBody.gravityScale = 5;
         playerComponent.FootCollider.enabled = true;
         playerComponent.Renderer.enabled = true;

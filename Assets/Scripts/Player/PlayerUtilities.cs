@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using UnityEngine;
 
 public class PlayerUtilities
@@ -14,11 +13,12 @@ public class PlayerUtilities
     {
         this.player = player;
         commands.Add(new JumpCommand(player, KeyCode.Space));
+        commands.Add(new DropCommand(player, KeyCode.S));
+        commands.Add(new DropCommand(player, KeyCode.DownArrow));
         commands.Add(new AttackCommand(player, KeyCode.RightShift));
         commands.Add(new WeaponSwapCommand(player, WEAPON.FISTS, KeyCode.Alpha1));
         commands.Add(new WeaponSwapCommand(player, WEAPON.GUN, KeyCode.Alpha2));
         commands.Add(new WeaponSwapCommand(player, WEAPON.SWORD, KeyCode.Alpha3));
-        commands.Add(new DropCommand(player, KeyCode.DownArrow));
     }
 
     public void HandleInput()
@@ -75,7 +75,7 @@ public class PlayerUtilities
         }
     }
 
-    public bool IsFalling()
+    private bool IsFalling()
     {
         return player.PlayerComponents.RigidBody.velocity.y < 0 && !IsGrounded();
     }
@@ -88,7 +88,7 @@ public class PlayerUtilities
         player.PlayerReferences.DamageDisplay.text = ((player.PlayerStats.DamageMultiplier - 1) * 100).ToString("F0") + "%";
     }
 
-    public void StartHurt()
+    private void StartHurt()
     {
         player.PlayerComponents.Renderer.color = Color.red;
         player.PlayerComponents.BodyCollider.enabled = false;

@@ -63,7 +63,7 @@ public class MenuManager : MonoBehaviourPunCallbacks
 
     public void OnClickCreateRoom()
     {
-        PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, null);
+        PhotonNetwork.JoinOrCreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
     }
 
     #endregion

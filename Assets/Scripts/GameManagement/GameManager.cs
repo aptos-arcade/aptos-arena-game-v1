@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public GameObject killFeedBox;
 
-    void Awake()
+    private void Awake()
     {
         instance = this;
         canvas.SetActive(true);
@@ -75,24 +75,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         canvas.SetActive(false);
         sceneCamera.SetActive(false);
     }
-
-    public void RelocatePlayer()
-    {
-        float randomPos = Random.Range(-4, 4);
-        localPlayer.transform.localPosition = new Vector2(randomPos, 6);
-    }
-
     void StartRespawn()
     {
         timeAmount -= Time.deltaTime;
         respawnTimer.text = "Respawn in: " + timeAmount.ToString("F0");
-        if(timeAmount <= 0)
-        {
-            RelocatePlayer();
-            respawnUI.SetActive(false);
-            startRespawn = false;
-            localPlayer.GetComponent<PlayerScript>().photonView.RPC("OnRevive", RpcTarget.AllBuffered);
-        }
+        if (!(timeAmount <= 0)) return;
+        respawnUI.SetActive(false);
+        startRespawn = false;
+        localPlayer.GetComponent<PlayerScript>().photonView.RPC("OnRevive", RpcTarget.AllBuffered);
     }
 
     public void EnableRespawn()
@@ -102,7 +92,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         respawnUI.SetActive(true);
     }
 
-    public void ToggleLeaveScreen()
+    private void ToggleLeaveScreen()
     {
         if(leaveScreen.activeSelf)
         {
@@ -123,7 +113,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player player)
     {
-        
         GameObject go = Instantiate(feedTextPrefab, new Vector2(0f, 0f), Quaternion.identity);
         go.transform.SetParent(feedBox.transform);
         go.GetComponent<TMP_Text>().text = player.NickName + " has joined the game";

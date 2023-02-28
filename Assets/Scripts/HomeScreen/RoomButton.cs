@@ -15,8 +15,8 @@ public class RoomButton : MonoBehaviour
         btn.onClick.AddListener(() => JoinRoomByName(roomName.text));
     }
 
-    void JoinRoomByName(string name)
+    void JoinRoomByName(string room)
     {
-        PhotonNetwork.JoinRoom(name);
+        PhotonNetwork.JoinRoom(room);
     }
 }

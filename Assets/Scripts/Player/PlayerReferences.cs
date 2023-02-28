@@ -25,11 +25,11 @@ public class PlayerReferences
     [SerializeField]
     private GameObject playerCamera;
 
-    [SerializeField]
-    private TMP_Text nametag;
+    [SerializeField] private TMP_Text nametag;
 
-    [SerializeField]
-    private TMP_Text damageDisplay;
+    [SerializeField] private TMP_Text damageDisplay;
+
+    [SerializeField] private GameObject explosionPrefab;
 
     public GameObject[] WeaponObjects { get => weaponObjects; }
     public GameObject ProjectilePrefab { get => projectilePrefab; }
@@ -39,4 +39,6 @@ public class PlayerReferences
     public GameObject PlayerCamera { get => playerCamera; set => playerCamera = value; }
     public TMP_Text Nametag { get => nametag; set => nametag = value; }
     public TMP_Text DamageDisplay { get => damageDisplay; set => damageDisplay = value; }
+    
+    public GameObject ExplosionPrefab { get => explosionPrefab; }
 }

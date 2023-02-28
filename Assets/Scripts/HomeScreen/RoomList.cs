@@ -15,14 +15,8 @@ public class RoomList : MonoBehaviourPunCallbacks
     {
         foreach(RoomInfo room in roomList)
         {
-            if(room.RemovedFromList)
-            {
-                DeleteRoom(room);
-            }
-            else
-            {
-                AddRoom(room);
-            }
+            if(room.RemovedFromList) DeleteRoom(room);
+            else AddRoom(room);
         }
     }
 
