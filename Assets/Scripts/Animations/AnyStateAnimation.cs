@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public enum RIG { BODY, LEGS }
 
 public class AnyStateAnimation
@@ -16,9 +12,9 @@ public class AnyStateAnimation
 
     public AnyStateAnimation(RIG rig, string name, params string[] higherPriority)
     {
-        this.AnimationRig = rig;
-        this.Name = name;
-        this.HigherPriority = higherPriority;
+        AnimationRig = rig;
+        Name = name;
+        HigherPriority = higherPriority;
     }
 
 

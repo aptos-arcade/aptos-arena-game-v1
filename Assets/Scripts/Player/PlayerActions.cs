@@ -29,7 +29,6 @@ public class PlayerActions
             player.PlayerReferences.PlayerCanvas.transform.localScale = new Vector3(direction, 1, 1);
             player.PlayerComponents.Animator.TryPlayAnimation("Body_Walk");
             player.PlayerComponents.Animator.TryPlayAnimation("Legs_Walk");
-
         }
         else if(player.PlayerComponents.RigidBody.velocity.magnitude < 0.01f)
         {
@@ -67,7 +66,7 @@ public class PlayerActions
         SwapWeapon();
     }
 
-    public void SwapWeapon()
+    private void SwapWeapon()
     {
         for (int i = 1; i < player.PlayerReferences.WeaponObjects.Length; i++)
         {

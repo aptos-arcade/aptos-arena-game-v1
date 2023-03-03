@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c38e6153f10094754910d191ea6ddbeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0.4
+  damage: 0.2
   knockbackForce: 1000
   _collider: {fileID: 3250129155286331358}
   launchX: 4

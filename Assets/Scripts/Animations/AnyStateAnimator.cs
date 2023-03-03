@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,19 +7,21 @@ public delegate void AnimationTriggerEvent(string animation);
 
 public class AnyStateAnimator : MonoBehaviourPun
 {
-    private Animator animator;
+    private Animator _animator;
 
-    private Dictionary<string, AnyStateAnimation> animations = new Dictionary<string, AnyStateAnimation>();
+    private Dictionary<string, AnyStateAnimation> _animations = new Dictionary<string, AnyStateAnimation>();
 
     public AnimationTriggerEvent AnimationTriggerEvent { get; set; }
 
-    private string currentAnimationLegs = string.Empty;
+    private string _currentAnimationLegs = string.Empty;
 
-    private string currentAnimationBody = string.Empty;
+    private string _currentAnimationBody = string.Empty;
+    
+    private static readonly int Weapon1 = Animator.StringToHash("Weapon");
 
     private void Awake()
     {
-        this.animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,21 +32,21 @@ public class AnyStateAnimator : MonoBehaviourPun
 
     public void AddAnimations(params AnyStateAnimation[] newAnimations)
     {
-        for (int i = 0; i < newAnimations.Length; i++)
+        foreach (var t in newAnimations)
         {
-            this.animations.Add(newAnimations[i].Name, newAnimations[i]);
+            _animations.Add(t.Name, t);
         }
     }
 
     public void TryPlayAnimation(string newAnimation)
     {
-        switch (animations[newAnimation].AnimationRig)
+        switch (_animations[newAnimation].AnimationRig)
         {
             case RIG.BODY:
-                PlayAnimation(ref currentAnimationBody);
+                PlayAnimation(ref _currentAnimationBody);
                 break;
             case RIG.LEGS:
-                PlayAnimation(ref currentAnimationLegs);
+                PlayAnimation(ref _currentAnimationLegs);
                 break;
         }
 
@@ -53,17 +54,17 @@ public class AnyStateAnimator : MonoBehaviourPun
         {
             if(currentAnimation == "")
             {
-                animations[newAnimation].Active = true;
+                _animations[newAnimation].Active = true;
                 currentAnimation = newAnimation;
             }
             else if(
                 currentAnimation != newAnimation
-                && !animations[newAnimation].HigherPriority.Contains(currentAnimation)
-                || !animations[currentAnimation].Active
+                && !_animations[newAnimation].HigherPriority.Contains(currentAnimation)
+                || !_animations[currentAnimation].Active
             )
             {
-                animations[currentAnimation].Active = false;
-                animations[newAnimation].Active = true;
+                _animations[currentAnimation].Active = false;
+                _animations[newAnimation].Active = true;
                 currentAnimation = newAnimation;
             }
         }
@@ -71,27 +72,24 @@ public class AnyStateAnimator : MonoBehaviourPun
 
     public void SetWeapon(float weapon)
     {
-        animator.SetFloat("Weapon", weapon);
+        _animator.SetFloat(Weapon1, weapon);
     }
 
     private void Animate()
     {
-        foreach (string key in animations.Keys)
+        foreach (string key in _animations.Keys)
         {
-            animator.SetBool(key, animations[key].Active);
+            _animator.SetBool(key, _animations[key].Active);
         }
     }
 
-    public void OnAnimationDone(string animation)
+    public void OnAnimationDone(string doneAnimation)
     {
-        animations[animation].Active = false;
+        _animations[doneAnimation].Active = false;
     }
 
-    public void OnAnimationTrigger(string animation)
+    public void OnAnimationTrigger(string startAnimation)
     {
-        if(AnimationTriggerEvent != null)
-        {
-            AnimationTriggerEvent.Invoke(animation);
-        }
+        AnimationTriggerEvent?.Invoke(startAnimation);
     }
 }

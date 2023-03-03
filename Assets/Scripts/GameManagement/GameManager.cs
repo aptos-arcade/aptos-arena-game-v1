@@ -1,19 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public ConnectedPlayer connectedPlayer;
     public GameObject connectedPlayersView;
+    
+    private string _characterPrefabName;
 
-    public GameObject playerPrefab;
+    [SerializeField] private GameObject _selectPlayerCanvas;
 
-    public GameObject canvas;
-
+    [SerializeField] private GameObject _spawnCanvas;
+    
     public GameObject sceneCamera;
 
     public TMP_Text pingrate;
@@ -38,7 +39,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Awake()
     {
         instance = this;
-        canvas.SetActive(true);
     }
 
     private void Start()
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         connectedPlayer.AddLocalPlayer();
         connectedPlayer.GetComponent<PhotonView>().RPC("UpdatePlayerList", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
     }
-
+    
     private void Update()
     {
         if (startRespawn)
@@ -68,14 +68,22 @@ public class GameManager : MonoBehaviourPunCallbacks
         pingrate.text = "Ping: " + PhotonNetwork.GetPing().ToString();
     }
 
-    void SpawnPlayer()
+    public void SelectCharacter(string characterPrefabName)
+    {
+        _characterPrefabName = characterPrefabName;
+        _selectPlayerCanvas.SetActive(false);
+        _spawnCanvas.SetActive(true);
+    }
+
+    private void SpawnPlayer()
     {
         float randomValue = Random.Range(-4, 4);
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector2(playerPrefab.transform.position.x * randomValue, 6), Quaternion.identity, 0);
-        canvas.SetActive(false);
+        PhotonNetwork.Instantiate(_characterPrefabName, new Vector2(randomValue, 6), Quaternion.identity, 0);
+        _spawnCanvas.SetActive(false);
         sceneCamera.SetActive(false);
     }
-    void StartRespawn()
+
+    private void StartRespawn()
     {
         timeAmount -= Time.deltaTime;
         respawnTimer.text = "Respawn in: " + timeAmount.ToString("F0");

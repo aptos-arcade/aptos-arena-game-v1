@@ -31,6 +31,7 @@ public class MenuManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Connected to Lobby");
+        Debug.Log(PhotonNetwork.CloudRegion);
         ConnectingScreen.SetActive(false);
         UserNameScreen.SetActive(true);
     }
@@ -63,7 +64,7 @@ public class MenuManager : MonoBehaviourPunCallbacks
 
     public void OnClickCreateRoom()
     {
-        PhotonNetwork.JoinOrCreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, null);
     }
 
     #endregion

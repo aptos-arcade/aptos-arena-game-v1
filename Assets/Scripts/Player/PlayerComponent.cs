@@ -26,10 +26,7 @@ public class PlayerComponent
 
     [SerializeField]
     private PhotonView photonView;
-
-    [SerializeField]
-    private SpriteRenderer renderer;
-
+    
     public Rigidbody2D RigidBody { get => rigidBody; }
 
     public AnyStateAnimator Animator { get => animator; }
@@ -41,8 +38,6 @@ public class PlayerComponent
     public PolygonCollider2D BodyCollider { get => bodyCollider; set => bodyCollider = value; }
 
     public PhotonView PhotonView { get => photonView; set => photonView = value; }
-
-    public SpriteRenderer Renderer { get => renderer; set => renderer = value; }
-
+    
     public LayerMask Platform { get => platform; }
 }

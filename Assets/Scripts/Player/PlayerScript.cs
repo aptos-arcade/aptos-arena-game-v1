@@ -20,14 +20,14 @@ public class PlayerScript : MonoBehaviourPun
 
     private PlayerActions playerActions;
     
-    public PlayerComponent PlayerComponents { get => playerComponent; }
-    public PlayerStats PlayerStats { get => playerStats; }
-    public PlayerActions PlayerActions { get => playerActions; }
-    public PlayerUtilities PlayerUtilities { get => playerUtilities; }
-    public PlayerReferences PlayerReferences { get => playerReferences; }
+    public PlayerComponent PlayerComponents => playerComponent;
+    public PlayerStats PlayerStats => playerStats;
+    public PlayerActions PlayerActions => playerActions;
+    public PlayerUtilities PlayerUtilities => playerUtilities;
+    public PlayerReferences PlayerReferences => playerReferences;
 
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         if (photonView.IsMine)
         {
@@ -78,7 +78,7 @@ public class PlayerScript : MonoBehaviourPun
         playerComponent.Animator.AnimationTriggerEvent += PlayerActions.Shoot;
         playerComponent.Animator.AddAnimations(animations);
 
-        playerReferences.DamageDisplay.text = "0%";
+        playerReferences.DamageDisplay.text = ((playerStats.DamageMultiplier - 1) * 100) + "%";
     }
 
     // Update is called once per frame
@@ -111,7 +111,6 @@ public class PlayerScript : MonoBehaviourPun
         playerComponent.RigidBody.velocity = Vector2.zero;
         playerComponent.RigidBody.gravityScale = 0;
         playerComponent.FootCollider.enabled = false;
-        playerComponent.Renderer.enabled = false;
 
         playerStats.Direction = Vector2.zero;
         playerStats.CanMove = false;
@@ -127,7 +126,6 @@ public class PlayerScript : MonoBehaviourPun
 
         playerComponent.RigidBody.gravityScale = 5;
         playerComponent.FootCollider.enabled = true;
-        playerComponent.Renderer.enabled = true;
 
         playerStats.CanMove = true;
         playerStats.DamageMultiplier = 1;

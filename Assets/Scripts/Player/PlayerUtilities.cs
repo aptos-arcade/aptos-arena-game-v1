@@ -90,13 +90,11 @@ public class PlayerUtilities
 
     private void StartHurt()
     {
-        player.PlayerComponents.Renderer.color = Color.red;
         player.PlayerComponents.BodyCollider.enabled = false;
     }
 
     public void EndHurt()
     {
-        player.PlayerComponents.Renderer.color = Color.white;
         player.PlayerComponents.BodyCollider.enabled = true;
     }
 }
