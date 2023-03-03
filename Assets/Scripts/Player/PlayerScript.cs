@@ -77,6 +77,7 @@ public class PlayerScript : MonoBehaviourPun
 
         playerComponent.Animator.AnimationTriggerEvent += PlayerActions.Shoot;
         playerComponent.Animator.AddAnimations(animations);
+        playerUtilities.GetSpriteRenderers();
 
         playerReferences.DamageDisplay.text = ((playerStats.DamageMultiplier - 1) * 100) + "%";
     }
@@ -96,7 +97,7 @@ public class PlayerScript : MonoBehaviourPun
     {
         PlayerActions.Move(transform);
     }
-
+    
     private void OnDeath()
     {
         GameObject explosion = PhotonNetwork.Instantiate(playerReferences.ExplosionPrefab.name, transform.position, Quaternion.identity);

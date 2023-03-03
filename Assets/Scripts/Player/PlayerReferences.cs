@@ -31,6 +31,8 @@ public class PlayerReferences
 
     [SerializeField] private GameObject explosionPrefab;
 
+    [SerializeField] private GameObject playerSpriteTransform;
+
     public GameObject[] WeaponObjects { get => weaponObjects; }
     public GameObject ProjectilePrefab { get => projectilePrefab; }
     public Transform GunBarrel { get => gunBarrel; }
@@ -41,4 +43,6 @@ public class PlayerReferences
     public TMP_Text DamageDisplay { get => damageDisplay; set => damageDisplay = value; }
     
     public GameObject ExplosionPrefab { get => explosionPrefab; }
+    
+    public GameObject PlayerSpriteTransform { get => playerSpriteTransform; }
 }

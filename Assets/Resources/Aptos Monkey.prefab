@@ -35,6 +35,10 @@ PrefabInstance:
       propertyPath: playerStats.decceleration
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 844259614977989141, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: playerReferences.playerSpriteTransform
+      value: 
+      objectReference: {fileID: 3658541225888619522}
     - target: {fileID: 852902644170608809, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: sceneViewId
       value: 0
@@ -221,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2830128808628532848, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: m_Name
-      value: Aptos Monkey Variant
+      value: Aptos Monkey
       objectReference: {fileID: 0}
     - target: {fileID: 2937567633956028491, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: sceneViewId
@@ -581,3 +585,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+--- !u!1 &3658541225888619522 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1516317430587334143, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+  m_PrefabInstance: {fileID: 2868429536156090877}
+  m_PrefabAsset: {fileID: 0}

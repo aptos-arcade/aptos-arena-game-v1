@@ -91,10 +91,26 @@ public class PlayerUtilities
     private void StartHurt()
     {
         player.PlayerComponents.BodyCollider.enabled = false;
+        foreach (SpriteRenderer renderer in player.PlayerComponents.PlayerSprites)
+        {
+            renderer.color = Color.red;
+        }
     }
 
     public void EndHurt()
     {
         player.PlayerComponents.BodyCollider.enabled = true;
+        foreach (SpriteRenderer renderer in player.PlayerComponents.PlayerSprites)
+        {
+            renderer.color = Color.white;
+        }
+    }
+
+    public void GetSpriteRenderers()
+    {
+        foreach (Transform transform in player.PlayerReferences.PlayerSpriteTransform.transform)
+        {
+            player.PlayerComponents.PlayerSprites.Add(transform.GetComponent<SpriteRenderer>());
+        }
     }
 }

@@ -34,4 +34,7 @@ public class PlayerComponent
 
     [SerializeField] private CameraFollow2D playerCamera;
     public CameraFollow2D PlayerCamera => playerCamera;
+    
+    private List<SpriteRenderer> _playerSprites = new();
+    public List<SpriteRenderer> PlayerSprites { get => _playerSprites; set => _playerSprites = value; }
 }
