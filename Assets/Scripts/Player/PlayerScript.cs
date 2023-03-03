@@ -86,8 +86,10 @@ public class PlayerScript : MonoBehaviourPun
     {
         PlayerUtilities.HandleInput();
         PlayerUtilities.HandleAir();
-        if (!photonView.IsMine || !(Mathf.Abs(transform.position.x) > 30) && !(Mathf.Abs(transform.position.y) > 16) || !playerStats.CanMove) return;
-        OnDeath();
+        if (photonView.IsMine && playerStats.CanMove && (Mathf.Abs(transform.position.x) > 30 || Mathf.Abs(transform.position.y) > 16))
+        {
+            OnDeath();
+        };
     }
 
     void FixedUpdate()

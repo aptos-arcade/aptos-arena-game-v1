@@ -6,8 +6,6 @@ public class CameraFollow2D : MonoBehaviour {
 
     public float Speed = 25f;
     public float interpVelocity;
-    public float minDistance;
-    public float followDistance;
 
     public GameObject target;
     public Vector3 offset;
@@ -19,7 +17,7 @@ public class CameraFollow2D : MonoBehaviour {
 
     private void Start()
     {
-        // start the camea at the players position
+        // start the camera at the players position
         _targetPos = transform.position;
     }
 
@@ -39,18 +37,13 @@ public class CameraFollow2D : MonoBehaviour {
             interpVelocity = targetDirection.magnitude * Speed;
 
             // calculate target position as the camera's current position * velocity * time
-            _targetPos = transform.position + (targetDirection.normalized * interpVelocity * Time.deltaTime);
+            _targetPos = transform.position + (targetDirection.normalized * (interpVelocity * Time.deltaTime));
 
             // smoothly update the position of the camera
             transform.position = Vector3.Lerp(transform.position, _targetPos + offset, 0.25f);
 
             // clamp the position of the camera to be within the min and max bounds set as variables
-            transform.position = new Vector3(
-                Mathf.Clamp(transform.position.x, minBounary.x, maxBounary.x),
-                Mathf.Clamp(transform.position.y, minBounary.y, maxBounary.y),
-                transform.position.z
-            );
-
+            transform.position = ClampCamera(transform.position);
         }
     }
     
@@ -64,10 +57,20 @@ public class CameraFollow2D : MonoBehaviour {
             float x = Random.Range(-1f, 1f) * magnitude;
             float y = Random.Range(-1f, 1f) * magnitude;
 
-            transform.position = _targetPos + new Vector3(x, y, -10f);
+            transform.position += new Vector3(x, y, 0);
+            
             elapsed += Time.deltaTime;
             yield return 0;
         }
-        transform.position = _targetPos;
+        transform.position = ClampCamera(_targetPos);
+    }
+
+    private Vector3 ClampCamera(Vector3 desiredPosition)
+    {
+        return new Vector3(
+            Mathf.Clamp(desiredPosition.x, minBounary.x, maxBounary.x),
+            Mathf.Clamp(desiredPosition.y, minBounary.y, maxBounary.y),
+            desiredPosition.z
+        );
     }
 }
