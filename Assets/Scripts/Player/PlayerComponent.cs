@@ -6,38 +6,32 @@ using Photon.Pun;
 [System.Serializable]
 public class PlayerComponent
 {
-    [SerializeField]
-    private Rigidbody2D rigidBody;
+    [SerializeField] private Rigidbody2D rigidBody;
+    public Rigidbody2D RigidBody => rigidBody;
 
-    [SerializeField]
-    private BoxCollider2D footCollider;
+    [SerializeField] private BoxCollider2D footCollider;
+    public Collider2D FootCollider => footCollider;
 
-    [SerializeField]
-    private PolygonCollider2D bodyCollider;
 
-    [SerializeField]
-    private AnyStateAnimator animator;
-
-    [SerializeField]
-    private LayerMask ground;
-
-    [SerializeField]
-    private LayerMask platform;
-
-    [SerializeField]
-    private PhotonView photonView;
-    
-    public Rigidbody2D RigidBody { get => rigidBody; }
-
-    public AnyStateAnimator Animator { get => animator; }
-
-    public LayerMask Ground { get => ground; }
-
-    public Collider2D FootCollider { get => footCollider; }
-
+    [SerializeField] private PolygonCollider2D bodyCollider;
     public PolygonCollider2D BodyCollider { get => bodyCollider; set => bodyCollider = value; }
 
+
+    [SerializeField] private AnyStateAnimator animator;
+    public AnyStateAnimator Animator => animator;
+
+
+    [SerializeField] private LayerMask ground;
+    public LayerMask Ground => ground;
+
+
+    [SerializeField] private LayerMask platform;
+    public LayerMask Platform => platform;
+
+    [SerializeField] private PhotonView photonView;
     public PhotonView PhotonView { get => photonView; set => photonView = value; }
-    
-    public LayerMask Platform { get => platform; }
+
+
+    [SerializeField] private CameraFollow2D playerCamera;
+    public CameraFollow2D PlayerCamera => playerCamera;
 }

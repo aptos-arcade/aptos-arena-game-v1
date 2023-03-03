@@ -83,9 +83,10 @@ public class PlayerUtilities
     public void HandleStrike(Vector2 direction, float knockback, float damage)
     {
         StartHurt();
-        player.PlayerComponents.RigidBody.AddForce(direction.normalized * knockback * Mathf.Pow(player.PlayerStats.DamageMultiplier, player.PlayerStats.KnockbackPower));
+        player.PlayerComponents.RigidBody.AddForce(direction.normalized * (knockback * Mathf.Pow(player.PlayerStats.DamageMultiplier, player.PlayerStats.KnockbackPower)));
         player.PlayerStats.DamageMultiplier += damage;
         player.PlayerReferences.DamageDisplay.text = ((player.PlayerStats.DamageMultiplier - 1) * 100).ToString("F0") + "%";
+        player.StartCoroutine(player.PlayerComponents.PlayerCamera.Shake(0.2f, 0.1f));
     }
 
     private void StartHurt()
