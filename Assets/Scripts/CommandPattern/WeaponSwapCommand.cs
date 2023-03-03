@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public enum WEAPON { FISTS = 0, GUN, SWORD}
+public enum WEAPON { GUN = 0, SWORD}
 
 public class WeaponSwapCommand : Command
 {

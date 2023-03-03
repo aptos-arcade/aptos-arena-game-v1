@@ -30,7 +30,7 @@ public class Sword : Weapon
         if (!photonView.IsMine) return;
 
         PlayerScript playerScript = collision.gameObject.GetComponent<PlayerScript>();
-        if (playerScript != null)
+        if (playerScript != null && !playerScript.photonView.IsMine)
         {
             Vector2 hitDirection = new Vector2(playerScript.transform.position.x > transform.position.x ? launchX : -launchX, launchY);
             photonView.RPC("Disable", RpcTarget.AllBuffered);
