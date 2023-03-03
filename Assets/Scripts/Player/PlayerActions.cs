@@ -68,18 +68,14 @@ public class PlayerActions
 
     private void SwapWeapon()
     {
-        for (int i = 1; i < player.PlayerReferences.WeaponObjects.Length; i++)
+        for (int i = 0; i < player.PlayerReferences.WeaponObjects.Length; i++)
         {
             if(player.PlayerReferences.WeaponObjects[i].activeSelf)
             {
                 player.PlayerReferences.WeaponObjects[i].GetComponent<PhotonView>().RPC("Unequip", RpcTarget.AllBuffered);
             }
         }
-
-        if(player.PlayerStats.Weapon > 0)
-        {
-            player.PlayerReferences.WeaponObjects[(int)player.PlayerStats.Weapon].GetComponent<PhotonView>().RPC("Equip", RpcTarget.AllBuffered);
-        }
+        player.PlayerReferences.WeaponObjects[(int)player.PlayerStats.Weapon].GetComponent<PhotonView>().RPC("Equip", RpcTarget.AllBuffered);
     }
 
     public void Drop()
@@ -90,7 +86,7 @@ public class PlayerActions
 
     IEnumerator ResetFeet()
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.2f);
         player.PlayerComponents.FootCollider.enabled = true;
     }
 

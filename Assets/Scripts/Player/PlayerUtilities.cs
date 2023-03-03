@@ -16,9 +16,8 @@ public class PlayerUtilities
         commands.Add(new DropCommand(player, KeyCode.S));
         commands.Add(new DropCommand(player, KeyCode.DownArrow));
         commands.Add(new AttackCommand(player, KeyCode.RightShift));
-        commands.Add(new WeaponSwapCommand(player, WEAPON.FISTS, KeyCode.Alpha1));
-        commands.Add(new WeaponSwapCommand(player, WEAPON.GUN, KeyCode.Alpha2));
-        commands.Add(new WeaponSwapCommand(player, WEAPON.SWORD, KeyCode.Alpha3));
+        commands.Add(new WeaponSwapCommand(player, WEAPON.GUN, KeyCode.Alpha1));
+        commands.Add(new WeaponSwapCommand(player, WEAPON.SWORD, KeyCode.Alpha2));
     }
 
     public void HandleInput()

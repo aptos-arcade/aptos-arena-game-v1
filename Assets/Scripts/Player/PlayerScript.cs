@@ -108,8 +108,6 @@ public class PlayerScript : MonoBehaviourPun
     [PunRPC]
     public void ShowDeath()
     {
-        playerActions.TrySwapWeapon(WEAPON.FISTS);
-
         playerComponent.RigidBody.velocity = Vector2.zero;
         playerComponent.RigidBody.gravityScale = 0;
         playerComponent.FootCollider.enabled = false;
