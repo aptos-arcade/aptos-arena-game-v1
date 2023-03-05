@@ -3052,7 +3052,7 @@ GameObject:
   - component: {fileID: 1430277903}
   - component: {fileID: 1430277904}
   m_Layer: 0
-  m_Name: 3250
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -25,8 +25,8 @@ namespace Player
 
         public void HandleInput()
         {
-            if (!_player.PlayerComponents.PhotonView.IsMine || !_player.PlayerStats.CanMove) return;
-            _player.PlayerStats.Direction = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
+            if (!_player.PlayerComponents.PhotonView.IsMine || !_player.PlayerState.CanMove) return;
+            _player.PlayerState.Direction = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
 
             foreach (Command command in _commands)
             {
@@ -71,7 +71,7 @@ namespace Player
             }
             if(IsGrounded())
             {
-                _player.PlayerStats.CanDoubleJump = true;
+                _player.PlayerState.CanDoubleJump = true;
             }
         }
 
@@ -82,9 +82,9 @@ namespace Player
 
         public void HandleStrike(Vector2 direction, float knockBack, float damage)
         {
-            _player.PlayerComponents.RigidBody.AddForce(direction.normalized * (knockBack * Mathf.Pow(_player.PlayerStats.DamageMultiplier, _player.PlayerStats.KnockBackPower)));
-            _player.PlayerStats.DamageMultiplier += damage;
-            _player.PlayerReferences.DamageDisplay.text = ((_player.PlayerStats.DamageMultiplier - 1) * 100).ToString("F0") + "%";
+            _player.PlayerComponents.RigidBody.AddForce(direction.normalized * (knockBack * Mathf.Pow(_player.PlayerState.DamageMultiplier, _player.PlayerStats.KnockBackPower)));
+            _player.PlayerState.DamageMultiplier += damage;
+            _player.PlayerReferences.DamageDisplay.text = ((_player.PlayerState.DamageMultiplier - 1) * 100).ToString("F0") + "%";
             _player.StartCoroutine(_player.PlayerComponents.PlayerCamera.Shake(0.2f, 0.1f));
         }
 

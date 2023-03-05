@@ -429,7 +429,7 @@ MonoBehaviour:
   playerStats:
     jumpForce: 1100
     doubleJumpForce: 1000
-    walkSpeed: 7.5
+    speed: 7.5
     acceleration: 15
     deceleration: 15
     velPower: 1

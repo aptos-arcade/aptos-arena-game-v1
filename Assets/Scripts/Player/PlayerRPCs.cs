@@ -24,8 +24,8 @@ namespace Player
             _player.PlayerComponents.RigidBody.gravityScale = 0;
             _player.PlayerComponents.FootCollider.enabled = false;
 
-            _player.PlayerStats.Direction = Vector2.zero;
-            _player.PlayerStats.CanMove = false;
+            _player.PlayerState.Direction = Vector2.zero;
+            _player.PlayerState.CanMove = false;
 
             _player.PlayerReferences.PlayerCanvas.SetActive(false);
         }
@@ -38,8 +38,8 @@ namespace Player
             _player.PlayerComponents.RigidBody.gravityScale = 5;
             _player.PlayerComponents.FootCollider.enabled = true;
 
-            _player.PlayerStats.CanMove = true;
-            _player.PlayerStats.DamageMultiplier = 1;
+            _player.PlayerState.CanMove = true;
+            _player.PlayerState.DamageMultiplier = 1;
 
             _player.PlayerReferences.DamageDisplay.text = "0%";
             _player.PlayerReferences.PlayerCanvas.SetActive(true);

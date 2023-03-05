@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Player
 {
-    public class Explosion : MonoBehaviourPun
+    public class PlayerExplosion : MonoBehaviourPun
     {
         private void Start()
         {

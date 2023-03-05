@@ -16,15 +16,15 @@ namespace Player
 
         public void Move(Transform transform)
         {
-            float targetSpeed = _player.PlayerStats.Direction.x * _player.PlayerStats.Speed;
+            float targetSpeed = _player.PlayerState.Direction.x * _player.PlayerStats.Speed;
             float speedDiff = targetSpeed - _player.PlayerComponents.RigidBody.velocity.x;
             float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? _player.PlayerStats.Acceleration : _player.PlayerStats.Deceleration;
             float movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, _player.PlayerStats.VelPower) * Mathf.Sign(speedDiff);
             _player.PlayerComponents.RigidBody.AddForce(movement * Vector2.right);
 
-            if(_player.PlayerStats.Direction.x != 0)
+            if(_player.PlayerState.Direction.x != 0)
             {
-                int direction = _player.PlayerStats.Direction.x < 0 ? -1 : 1;
+                int direction = _player.PlayerState.Direction.x < 0 ? -1 : 1;
                 transform.localScale = new Vector3(direction, 1, 1);
                 _player.PlayerReferences.PlayerCanvas.transform.localScale = new Vector3(direction, 1, 1);
                 _player.PlayerComponents.Animator.TryPlayAnimation("Body_Walk");
@@ -45,11 +45,11 @@ namespace Player
                 _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Jump");
                 _player.PlayerComponents.Animator.TryPlayAnimation("Body_Jump");
             }
-            else if(_player.PlayerStats.CanDoubleJump)
+            else if(_player.PlayerState.CanDoubleJump)
             {
                 _player.PlayerComponents.RigidBody.velocity = new Vector2(_player.PlayerComponents.RigidBody.velocity.x, 0);
                 _player.PlayerComponents.RigidBody.AddForce(new Vector2(0, _player.PlayerStats.DoubleJumpForce));
-                _player.PlayerStats.CanDoubleJump = false;
+                _player.PlayerState.CanDoubleJump = false;
             }
         }
 
@@ -61,8 +61,8 @@ namespace Player
 
         public void TrySwapWeapon(Commands.Weapon weapon)
         {
-            _player.PlayerStats.Weapon = weapon;
-            _player.PlayerComponents.Animator.SetWeapon((int)_player.PlayerStats.Weapon);
+            _player.PlayerState.Weapon = weapon;
+            _player.PlayerComponents.Animator.SetWeapon((int)_player.PlayerState.Weapon);
             SwapWeapon();
         }
 
@@ -73,7 +73,7 @@ namespace Player
                 if(weapon.activeSelf) weapon.GetComponent<PhotonView>().RPC("UnEquip", RpcTarget.AllBuffered);
             }
 
-            _player.PlayerReferences.WeaponObjects[(int)_player.PlayerStats.Weapon].GetComponent<PhotonView>().RPC("Equip", RpcTarget.AllBuffered);
+            _player.PlayerReferences.WeaponObjects[(int)_player.PlayerState.Weapon].GetComponent<PhotonView>().RPC("Equip", RpcTarget.AllBuffered);
         }
 
         public void Drop()

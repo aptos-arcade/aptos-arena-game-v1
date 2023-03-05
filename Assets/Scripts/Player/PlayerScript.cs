@@ -8,24 +8,20 @@ namespace Player
     public class PlayerScript : MonoBehaviourPun
     {
 
-        [SerializeField]
-        private PlayerStats playerStats;
-
-        [SerializeField]
-        private PlayerComponent playerComponent;
-
-        [SerializeField]
-        private PlayerReferences playerReferences;
-
-        private PlayerUtilities _playerUtilities;
-
-        private PlayerActions _playerActions;
-    
-        public PlayerComponent PlayerComponents => playerComponent;
+        [SerializeField] private PlayerStats playerStats;
         public PlayerStats PlayerStats => playerStats;
-        public PlayerActions PlayerActions => _playerActions;
-        public PlayerUtilities PlayerUtilities => _playerUtilities;
+
+        [SerializeField] private PlayerComponent playerComponent;
+        public PlayerComponent PlayerComponents => playerComponent;
+
+        [SerializeField] private PlayerReferences playerReferences;
         public PlayerReferences PlayerReferences => playerReferences;
+
+        public PlayerActions PlayerActions { get; private set; }
+
+        public PlayerUtilities PlayerUtilities { get; private set; }
+        
+        public PlayerState PlayerState { get; private set; } = new();
 
         // Start is called before the first frame update
         private void Awake()
@@ -39,6 +35,7 @@ namespace Player
                 playerReferences.PlayerCamera.transform.position = new Vector3(playerPosition.x, playerPosition.y, playerReferences.PlayerCamera.transform.position.z);
                 playerReferences.PlayerCamera.SetActive(true);
                 playerReferences.PlayerCamera.transform.SetParent(null, true);
+                
                 playerReferences.NameTag.text = PhotonNetwork.NickName;
                 playerReferences.NameTag.color = new Color(0.6588235f, 0.8078431f, 1f);
             }
@@ -54,32 +51,30 @@ namespace Player
         private void Start()
         {
             Debug.Log("Start");
-            _playerActions = new PlayerActions(this);
-            _playerUtilities = new PlayerUtilities(this);
+            PlayerActions = new PlayerActions(this);
+            PlayerUtilities = new PlayerUtilities(this);
 
-            playerStats.Speed = playerStats.WalkSpeed;
-            playerStats.PlayerName = PhotonNetwork.NickName;
+            PlayerState.PlayerName = PhotonNetwork.NickName;
 
-            AnyStateAnimation[] animations = new AnyStateAnimation[]
-            {
-                new AnyStateAnimation(Rig.Body, "Body_Idle", "Body_Attack"),
-                new AnyStateAnimation(Rig.Body, "Body_Walk", "Body_Attack", "Body_Jump"),
-                new AnyStateAnimation(Rig.Body, "Body_Jump"),
-                new AnyStateAnimation(Rig.Body, "Body_Fall", "Body_Attack"),
-                new AnyStateAnimation(Rig.Body, "Body_Attack"),
+            AnyStateAnimation[] animations = {
+                new(Rig.Body, "Body_Idle", "Body_Attack"),
+                new(Rig.Body, "Body_Walk", "Body_Attack", "Body_Jump"),
+                new(Rig.Body, "Body_Jump"),
+                new(Rig.Body, "Body_Fall", "Body_Attack"),
+                new(Rig.Body, "Body_Attack"),
 
-                new AnyStateAnimation(Rig.Legs, "Legs_Idle", "Legs_Attack"),
-                new AnyStateAnimation(Rig.Legs, "Legs_Walk", "Legs_Jump"),
-                new AnyStateAnimation(Rig.Legs, "Legs_Jump"),
-                new AnyStateAnimation(Rig.Legs, "Legs_Fall"),
-                new AnyStateAnimation(Rig.Legs, "Legs_Attack")
+                new(Rig.Legs, "Legs_Idle", "Legs_Attack"),
+                new(Rig.Legs, "Legs_Walk", "Legs_Jump"),
+                new(Rig.Legs, "Legs_Jump"),
+                new(Rig.Legs, "Legs_Fall"),
+                new(Rig.Legs, "Legs_Attack")
             };
 
             playerComponent.Animator.AnimationTriggerEvent += PlayerActions.Shoot;
             playerComponent.Animator.AddAnimations(animations);
             PlayerUtilities.GetSpriteRenderers();
 
-            playerReferences.DamageDisplay.text = ((playerStats.DamageMultiplier - 1) * 100) + "%";
+            playerReferences.DamageDisplay.text = ((PlayerState.DamageMultiplier - 1) * 100) + "%";
         }
 
         // Update is called once per frame
@@ -87,7 +82,7 @@ namespace Player
         {
             PlayerUtilities.HandleInput();
             PlayerUtilities.HandleAir();
-            if (photonView.IsMine && playerStats.CanMove && (Mathf.Abs(transform.position.x) > 30 || Mathf.Abs(transform.position.y) > 16))
+            if (photonView.IsMine && PlayerState.CanMove && (Mathf.Abs(transform.position.x) > 30 || Mathf.Abs(transform.position.y) > 16))
             {
                 OnDeath();
             }
