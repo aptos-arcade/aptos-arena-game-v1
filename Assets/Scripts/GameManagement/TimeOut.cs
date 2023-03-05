@@ -1,71 +1,67 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using Photon.Pun;
+using TMPro;
+using UnityEngine;
 
-public class TimeOut : MonoBehaviourPun
+namespace GameManagement
 {
-
-    [SerializeField]
-    private GameObject timeOutUI;
-
-    private float idleTime = 60f;
-    private float timer = 5;
-
-    [SerializeField]
-    private TMP_Text timeOutText;
-
-    private bool timeOver;
-
-    // Update is called once per frame
-    void Update()
+    public class TimeOut : MonoBehaviourPun
     {
-        if (!timeOver)
+
+        [SerializeField] private GameObject timeOutUI;
+        [SerializeField] private float idleTime = 60;
+        [SerializeField] private float timer = 5;
+        [SerializeField] private TMP_Text timeOutText;
+        private bool _timeOver;
+
+        // Update is called once per frame
+        private void Update()
         {
-            if (Input.anyKey)
+            if (!_timeOver)
             {
-                idleTime = 60f;
-            }
-
-            idleTime -= Time.deltaTime;
-
-            if (idleTime <= 0)
-            {
-                OpenTimeoutUI();
-            }
-
-            if (timeOutUI.activeSelf)
-            {
-                timer -= Time.deltaTime;
-                timeOutText.text = "Disconnecting in: " + timer.ToString("F0");
-
-                if (timer <= 0)
+                if (Input.anyKey)
                 {
-                    timeOver = true;
+                    idleTime = 60f;
                 }
-                else if (Input.anyKey)
+
+                idleTime -= Time.deltaTime;
+
+                if (idleTime <= 0)
                 {
-                    idleTime = 10;
-                    timer = 5;
-                    timeOutUI.SetActive(false);
+                    OpenTimeoutUI();
+                }
+
+                if (timeOutUI.activeSelf)
+                {
+                    timer -= Time.deltaTime;
+                    timeOutText.text = "Disconnecting in: " + timer.ToString("F0");
+
+                    if (timer <= 0)
+                    {
+                        _timeOver = true;
+                    }
+                    else if (Input.anyKey)
+                    {
+                        idleTime = 10;
+                        timer = 5;
+                        timeOutUI.SetActive(false);
+                    }
                 }
             }
+            else
+            {
+                LeaveRoom();
+            }
         }
-        else
+
+        private void OpenTimeoutUI()
         {
-            LeaveRoom();
+            timeOutUI.SetActive(true);
         }
-    }
 
-    void OpenTimeoutUI()
-    {
-        timeOutUI.SetActive(true);
-    }
-
-    void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-        PhotonNetwork.LoadLevel(0);
+        private void LeaveRoom()
+        {
+            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LoadLevel(0);
+        }
     }
 }

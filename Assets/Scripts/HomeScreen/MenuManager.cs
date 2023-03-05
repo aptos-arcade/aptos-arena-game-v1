@@ -1,71 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviourPunCallbacks
+namespace HomeScreen
 {
-    [SerializeField]
-    GameObject ConnectingScreen, UserNameScreen, ConnectScreen;
-
-    [SerializeField]
-    GameObject CreateUserNameButton;
-
-    [SerializeField]
-    TMP_InputField UserNameInput, CreateRoomInput;
-
-    private void Awake()
+    public class MenuManager : MonoBehaviourPunCallbacks
     {
-        PhotonNetwork.ConnectUsingSettings();
-    }
+        [SerializeField] private GameObject connectingScreen, userNameScreen, connectScreen, createUserNameButton;
 
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Connected to Master");
-        PhotonNetwork.JoinLobby(TypedLobby.Default);
-    }
+        [SerializeField] private TMP_InputField userNameInput, createRoomInput;
 
-    public override void OnJoinedLobby()
-    {
-        Debug.Log("Connected to Lobby");
-        Debug.Log(PhotonNetwork.CloudRegion);
-        ConnectingScreen.SetActive(false);
-        UserNameScreen.SetActive(true);
-    }
-
-    public override void OnJoinedRoom()
-    {
-        PhotonNetwork.LoadLevel(1);
-    }
-
-    #region UIMethods
-
-    public void OnClickCreateNameButton()
-    {
-        PhotonNetwork.NickName = UserNameInput.text;
-        UserNameScreen.SetActive(false);
-        ConnectScreen.SetActive(true);
-    }
-
-    public void OnNameFieldChange()
-    {
-        if(UserNameInput.text.Length >= 2)
+        private void Awake()
         {
-            CreateUserNameButton.GetComponent<Button>().interactable = true;
+            PhotonNetwork.ConnectUsingSettings();
         }
-        else
+
+        public override void OnConnectedToMaster()
         {
-            CreateUserNameButton.GetComponent<Button>().interactable = false;
+            Debug.Log("Connected to Master");
+            PhotonNetwork.JoinLobby(TypedLobby.Default);
         }
-    }
 
-    public void OnClickCreateRoom()
-    {
-        PhotonNetwork.CreateRoom(CreateRoomInput.text, new RoomOptions { MaxPlayers = 4 }, null);
-    }
+        public override void OnJoinedLobby()
+        {
+            Debug.Log("Connected to Lobby");
+            connectingScreen.SetActive(false);
+            userNameScreen.SetActive(true);
+        }
 
-    #endregion
+        public override void OnJoinedRoom()
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
+
+        #region UIMethods
+
+        public void OnClickCreateNameButton()
+        {
+            PhotonNetwork.NickName = userNameInput.text;
+            userNameScreen.SetActive(false);
+            connectScreen.SetActive(true);
+        }
+
+        public void OnNameFieldChange()
+        {
+            createUserNameButton.GetComponent<Button>().interactable = userNameInput.text.Length >= 2;
+        }
+
+        public void OnClickCreateRoom()
+        {
+            PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions { MaxPlayers = 4 });
+        }
+
+        #endregion
+    }
 }

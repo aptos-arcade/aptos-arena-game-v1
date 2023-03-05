@@ -1,19 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
 
-public class Weapon: MonoBehaviourPun
+namespace Weapons
 {
-    [PunRPC]
-    public void Equip()
+    public class Weapon: MonoBehaviourPun
     {
-        this.gameObject.SetActive(true);
-    }
+        [PunRPC]
+        public void Equip()
+        {
+            gameObject.SetActive(true);
+        }
 
-    [PunRPC]
-    public void Unequip()
-    {
-        this.gameObject.SetActive(false);
+        [PunRPC]
+        public void UnEquip()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

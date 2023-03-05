@@ -97,12 +97,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72aedf1c101b54ca8aa63cbd963c99ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 25
-  interpVelocity: 0
+  speed: 25
   target: {fileID: 2830128808628532848}
   offset: {x: 0.5, y: 0, z: 0}
-  minBounary: {x: -11, y: -1}
-  maxBounary: {x: 11, y: 1}
+  minBoundary: {x: -11, y: -1}
+  maxBoundary: {x: 11, y: 1}
 --- !u!1 &2256968163639294775
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +388,7 @@ GameObject:
   - component: {fileID: 3407798680167608400}
   - component: {fileID: 852902644170608809}
   - component: {fileID: 7278892213829943527}
+  - component: {fileID: 8429741026919165561}
   m_Layer: 0
   m_Name: PirateMonkey
   m_TagString: Untagged
@@ -430,12 +430,10 @@ MonoBehaviour:
     jumpForce: 1100
     doubleJumpForce: 1000
     walkSpeed: 7.5
-    runSpeed: 0
     acceleration: 15
-    decceleration: 15
+    deceleration: 15
     velPower: 1
-    knockbackPower: 2
-    canMove: 1
+    knockBackPower: 2
   playerComponent:
     rigidBody: {fileID: 5331194056099474335}
     footCollider: {fileID: 3940931925825096773}
@@ -458,9 +456,11 @@ MonoBehaviour:
     playerCanvas: {fileID: 3738302585982504326}
     killFeedPrefab: {fileID: 6790466491002565360, guid: 2a135f2fe844447cba9ec9d4c339498b, type: 3}
     playerCamera: {fileID: 13093637899374252}
-    nametag: {fileID: 4236624631673397185}
+    nameTag: {fileID: 4236624631673397185}
     damageDisplay: {fileID: 6348896982803139513}
     explosionPrefab: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 3}
+    playerMesh: {fileID: 0}
+    portal: {fileID: 0}
 --- !u!50 &5331194056099474335
 Rigidbody2D:
   serializedVersion: 4
@@ -643,6 +643,18 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &8429741026919165561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830128808628532848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a85d073146e47ac937f51c49f77f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3738302585982504326
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomButton : MonoBehaviour
+namespace HomeScreen
 {
-    public TMP_Text roomName;
-
-    private void Start()
+    public class RoomButton : MonoBehaviour
     {
-        Button btn = GetComponent<Button>();
-        btn.onClick.AddListener(() => JoinRoomByName(roomName.text));
-    }
+        public TMP_Text roomName;
 
-    void JoinRoomByName(string room)
-    {
-        PhotonNetwork.JoinRoom(room);
+        private void Start()
+        {
+            var btn = GetComponent<Button>();
+            btn.onClick.AddListener(() => JoinRoomByName(roomName.text));
+        }
+
+        private static void JoinRoomByName(string room)
+        {
+            PhotonNetwork.JoinRoom(room);
+        }
     }
 }

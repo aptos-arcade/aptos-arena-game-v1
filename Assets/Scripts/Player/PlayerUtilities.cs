@@ -1,32 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using Commands;
+using Photon.Pun;
 using UnityEngine;
 
-public class PlayerUtilities
+namespace Player
 {
-
-    PlayerScript player;
-
-    private List<Command> commands = new List<Command>();
-
-    public PlayerUtilities(PlayerScript player)
+    public class PlayerUtilities
     {
-        this.player = player;
-        commands.Add(new JumpCommand(player, KeyCode.Space));
-        commands.Add(new DropCommand(player, KeyCode.S));
-        commands.Add(new DropCommand(player, KeyCode.DownArrow));
-        commands.Add(new AttackCommand(player, KeyCode.RightShift));
-        commands.Add(new WeaponSwapCommand(player, WEAPON.GUN, KeyCode.Alpha1));
-        commands.Add(new WeaponSwapCommand(player, WEAPON.SWORD, KeyCode.Alpha2));
-    }
+        private readonly PlayerScript _player;
 
-    public void HandleInput()
-    {
-        if(player.PlayerComponents.PhotonView.IsMine && player.PlayerStats.CanMove)
+        private readonly List<Command> _commands = new();
+
+        public PlayerUtilities(PlayerScript player)
         {
-            player.PlayerStats.Direction = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
+            _player = player;
+            _commands.Add(new JumpCommand(player, KeyCode.Space));
+            _commands.Add(new DropCommand(player, KeyCode.S));
+            _commands.Add(new DropCommand(player, KeyCode.DownArrow));
+            _commands.Add(new AttackCommand(player, KeyCode.RightShift));
+            _commands.Add(new WeaponSwapCommand(player, Weapon.Gun, KeyCode.Alpha1));
+            _commands.Add(new WeaponSwapCommand(player, Weapon.Sword, KeyCode.Alpha2));
+        }
 
-            foreach (Command command in commands)
+        public void HandleInput()
+        {
+            if (!_player.PlayerComponents.PhotonView.IsMine || !_player.PlayerStats.CanMove) return;
+            _player.PlayerStats.Direction = new Vector2(Input.GetAxisRaw("Horizontal"), 0);
+
+            foreach (Command command in _commands)
             {
                 if (Input.GetKeyDown(command.Key))
                 {
@@ -44,73 +46,86 @@ public class PlayerUtilities
                 }
             }
         }
-    }
 
-    public bool IsGrounded()
-    {
-        return IsOnGround() || IsOnPlatform();
-    }
-
-    public bool IsOnGround()
-    {
-        return player.PlayerComponents.RigidBody.IsTouchingLayers(player.PlayerComponents.Ground.value);
-    }
-
-    public bool IsOnPlatform()
-    {
-        return player.PlayerComponents.RigidBody.IsTouchingLayers(player.PlayerComponents.Platform.value);
-    }
-
-    public void HandleAir()
-    {
-        if(IsFalling())
+        public bool IsGrounded()
         {
-            player.PlayerComponents.Animator.TryPlayAnimation("Body_Fall");
-            player.PlayerComponents.Animator.TryPlayAnimation("Legs_Fall");
+            return IsOnGround() || IsOnPlatform();
         }
-        if(IsGrounded())
+
+        public bool IsOnGround()
         {
-            player.PlayerStats.CanDoubleJump = true;
+            return _player.PlayerComponents.RigidBody.IsTouchingLayers(_player.PlayerComponents.Ground.value);
         }
-    }
 
-    private bool IsFalling()
-    {
-        return player.PlayerComponents.RigidBody.velocity.y < 0 && !IsGrounded();
-    }
-
-    public void HandleStrike(Vector2 direction, float knockback, float damage)
-    {
-        StartHurt();
-        player.PlayerComponents.RigidBody.AddForce(direction.normalized * (knockback * Mathf.Pow(player.PlayerStats.DamageMultiplier, player.PlayerStats.KnockbackPower)));
-        player.PlayerStats.DamageMultiplier += damage;
-        player.PlayerReferences.DamageDisplay.text = ((player.PlayerStats.DamageMultiplier - 1) * 100).ToString("F0") + "%";
-        player.StartCoroutine(player.PlayerComponents.PlayerCamera.Shake(0.2f, 0.1f));
-    }
-
-    private void StartHurt()
-    {
-        player.PlayerComponents.BodyCollider.enabled = false;
-        foreach (SpriteRenderer renderer in player.PlayerComponents.PlayerSprites)
+        public bool IsOnPlatform()
         {
-            renderer.color = Color.red;
+            return _player.PlayerComponents.RigidBody.IsTouchingLayers(_player.PlayerComponents.Platform.value);
         }
-    }
 
-    public void EndHurt()
-    {
-        player.PlayerComponents.BodyCollider.enabled = true;
-        foreach (SpriteRenderer renderer in player.PlayerComponents.PlayerSprites)
+        public void HandleAir()
         {
-            renderer.color = Color.white;
+            if(IsFalling())
+            {
+                _player.PlayerComponents.Animator.TryPlayAnimation("Body_Fall");
+                _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Fall");
+            }
+            if(IsGrounded())
+            {
+                _player.PlayerStats.CanDoubleJump = true;
+            }
         }
-    }
 
-    public void GetSpriteRenderers()
-    {
-        foreach (Transform transform in player.PlayerReferences.PlayerSpriteTransform.transform)
+        private bool IsFalling()
         {
-            player.PlayerComponents.PlayerSprites.Add(transform.GetComponent<SpriteRenderer>());
+            return _player.PlayerComponents.RigidBody.velocity.y < 0 && !IsGrounded();
+        }
+
+        public void HandleStrike(Vector2 direction, float knockBack, float damage)
+        {
+            _player.PlayerComponents.RigidBody.AddForce(direction.normalized * (knockBack * Mathf.Pow(_player.PlayerStats.DamageMultiplier, _player.PlayerStats.KnockBackPower)));
+            _player.PlayerStats.DamageMultiplier += damage;
+            _player.PlayerReferences.DamageDisplay.text = ((_player.PlayerStats.DamageMultiplier - 1) * 100).ToString("F0") + "%";
+            _player.StartCoroutine(_player.PlayerComponents.PlayerCamera.Shake(0.2f, 0.1f));
+        }
+
+        public void StartHurt()
+        {
+            _player.PlayerComponents.BodyCollider.enabled = false;
+            foreach (SpriteRenderer renderer in _player.PlayerComponents.PlayerSprites)
+            {
+                renderer.color = Color.red;
+            }
+        }
+
+        public void EndHurt()
+        {
+            _player.PlayerComponents.BodyCollider.enabled = true;
+            foreach (SpriteRenderer renderer in _player.PlayerComponents.PlayerSprites)
+            {
+                renderer.color = Color.white;
+            }
+        }
+    
+        public IEnumerator RespawnCoroutine()
+        {
+            Vector2 spawnPosition = new Vector2(Random.Range(-8, 8), 7);
+            _player.transform.position = spawnPosition;
+            GameObject portal = PhotonNetwork.Instantiate(
+                _player.PlayerReferences.Portal.name,
+                spawnPosition,
+                Quaternion.identity
+            );
+            yield return new WaitForSeconds(2.5f);
+            PhotonNetwork.Destroy(portal);
+            _player.photonView.RPC("OnRevive", RpcTarget.AllBuffered);
+        }
+
+        public void GetSpriteRenderers()
+        {
+            foreach (Transform transform in _player.PlayerReferences.PlayerMesh.transform)
+            {
+                _player.PlayerComponents.PlayerSprites.Add(transform.GetComponent<SpriteRenderer>());
+            }
         }
     }
 }

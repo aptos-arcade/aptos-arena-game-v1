@@ -28,6 +28,10 @@ PrefabInstance:
       value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 844259614977989141, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: playerReferences.portal
+      value: 
+      objectReference: {fileID: 1720114799997968, guid: d2e31520ae0c946578b21affc094b68d, type: 3}
+    - target: {fileID: 844259614977989141, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: playerStats.acceleration
       value: 20
       objectReference: {fileID: 0}
@@ -35,6 +39,10 @@ PrefabInstance:
       propertyPath: playerStats.decceleration
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 844259614977989141, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: playerReferences.playerMesh
+      value: 
+      objectReference: {fileID: 3658541225888619522}
     - target: {fileID: 844259614977989141, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: playerReferences.playerSpriteTransform
       value: 
@@ -414,6 +422,22 @@ PrefabInstance:
     - target: {fileID: 5772445910275583708, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: m_Bounds.m_Extent.z
       value: 0.0000003691288
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312909855077762142, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: maxBoundary.x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312909855077762142, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: maxBoundary.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312909855077762142, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: minBoundary.x
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6312909855077762142, guid: b1b99d3052b2141edb305a718b347162, type: 3}
+      propertyPath: minBoundary.y
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6776187742687627948, guid: b1b99d3052b2141edb305a718b347162, type: 3}
       propertyPath: m_Bounds.m_Center.x

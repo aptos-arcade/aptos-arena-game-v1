@@ -1,64 +1,58 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using UnityEngine;
+﻿using Photon.Pun;
 using TMPro;
-using Photon.Pun;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class DisconnectManager : MonoBehaviourPunCallbacks {
-
-    public GameObject DisUi;
-    public GameObject MenuButton;
-    public GameObject ReconnectButton;
-    public TMP_Text StatusText;
-
-    private void Awake()
+namespace GameManagement
+{
+    public class DisconnectManager : MonoBehaviourPunCallbacks
     {
-        DontDestroyOnLoad(this.gameObject);
-    }
 
-
-    private void Update()
-    {
-        if(Application.internetReachability == NetworkReachability.NotReachable)
+        [SerializeField] private GameObject disconnectUI;
+        [SerializeField] private GameObject menuButton;
+        [SerializeField] private GameObject reconnectButton;
+        [SerializeField] private TMP_Text statusText;
+    
+        private void Awake()
         {
-            DisUi.SetActive(true);
+            DontDestroyOnLoad(this.gameObject);
+        }
 
-            if (SceneManager.GetActiveScene().buildIndex == 0)
+        private void Update()
+        {
+            if (Application.internetReachability != NetworkReachability.NotReachable) return;
+            disconnectUI.SetActive(true);
+            
+            switch(SceneManager.GetActiveScene().buildIndex)
             {
-                ReconnectButton.SetActive(true);
-                StatusText.text = "Lost connection to Photon, please try to reconnect";
-            }
-
-            if (SceneManager.GetActiveScene().buildIndex == 1)
-            {
-                MenuButton.SetActive(true);
-                StatusText.text = "Lost connection to Photon, please try to reconnect in the main menu";
+                case 0:
+                    reconnectButton.SetActive(true);
+                    statusText.text = "Lost connection to Photon, please try to reconnect";
+                    break;
+                case 1:
+                    menuButton.SetActive(true);
+                    statusText.text = "Lost connection to Photon, please try to reconnect in the main menu";
+                    break;
             }
         }
-    }
 
-    //called by photon
-    public override void OnConnectedToMaster()
-    {
-        if(DisUi.activeSelf)
+        //called by photon
+        public override void OnConnectedToMaster()
         {
-            MenuButton.SetActive(false);
-            ReconnectButton.SetActive(false);
-            DisUi.SetActive(false);
+            if (!disconnectUI.activeSelf) return;
+            menuButton.SetActive(false);
+            reconnectButton.SetActive(false);
+            disconnectUI.SetActive(false);
+        }
+
+        public void OnClick_TryConnect()
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
+
+        public void OnClick_Menu()
+        {
+            PhotonNetwork.LoadLevel(0);
         }
     }
-
-    public void OnClick_TryConnect()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-    }
-
-    public void OnClick_Menu()
-    {
-        PhotonNetwork.LoadLevel(0);
-    }
-
-
-
 }

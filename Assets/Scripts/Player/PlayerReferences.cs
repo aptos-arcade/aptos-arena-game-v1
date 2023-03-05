@@ -1,48 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
-[System.Serializable]
-public class PlayerReferences
+namespace Player
 {
-    [SerializeField]
-    private GameObject[] weaponObjects;
+    [System.Serializable]
+    public class PlayerReferences
+    {
+        [SerializeField]
+        private GameObject[] weaponObjects;
+        public GameObject[] WeaponObjects => weaponObjects;
 
-    [SerializeField]
-    private GameObject projectilePrefab;
 
-    [SerializeField]
-    private Transform gunBarrel;
+        [SerializeField]
+        private GameObject projectilePrefab;
+        public GameObject ProjectilePrefab => projectilePrefab;
 
-    [SerializeField]
-    private GameObject playerCanvas;
+        [SerializeField]
+        private Transform gunBarrel;
+        public Transform GunBarrel => gunBarrel;
 
-    [SerializeField]
-    private GameObject killFeedPrefab;
+        [SerializeField]
+        private GameObject playerCanvas;
+        public GameObject PlayerCanvas { get => playerCanvas; set => playerCanvas = value; }
 
-    [SerializeField]
-    private GameObject playerCamera;
-
-    [SerializeField] private TMP_Text nametag;
-
-    [SerializeField] private TMP_Text damageDisplay;
-
-    [SerializeField] private GameObject explosionPrefab;
-
-    [SerializeField] private GameObject playerSpriteTransform;
-
-    public GameObject[] WeaponObjects { get => weaponObjects; }
-    public GameObject ProjectilePrefab { get => projectilePrefab; }
-    public Transform GunBarrel { get => gunBarrel; }
-    public GameObject PlayerCanvas { get => playerCanvas; set => playerCanvas = value; }
-    public GameObject KillFeedPrefab { get => killFeedPrefab; }
-    public GameObject PlayerCamera { get => playerCamera; set => playerCamera = value; }
-    public TMP_Text Nametag { get => nametag; set => nametag = value; }
-    public TMP_Text DamageDisplay { get => damageDisplay; set => damageDisplay = value; }
+        [SerializeField]
+        private GameObject killFeedPrefab;
+        public GameObject KillFeedPrefab => killFeedPrefab;
     
-    public GameObject ExplosionPrefab { get => explosionPrefab; }
-    
-    public GameObject PlayerSpriteTransform { get => playerSpriteTransform; }
+        [SerializeField]
+        private GameObject playerCamera;
+        public GameObject PlayerCamera { get => playerCamera; set => playerCamera = value; }
+
+        [SerializeField] private TMP_Text nameTag;
+        public TMP_Text NameTag { get => nameTag; set => nameTag = value; }
+
+        [SerializeField] private TMP_Text damageDisplay;
+        public TMP_Text DamageDisplay { get => damageDisplay; set => damageDisplay = value; }
+
+        [SerializeField] private GameObject explosionPrefab;
+        public GameObject ExplosionPrefab => explosionPrefab;
+
+
+        [SerializeField] private GameObject playerMesh;
+        public GameObject PlayerMesh => playerMesh;
+
+
+        [SerializeField] private GameObject portal;
+        public GameObject Portal => portal;
+    }
 }

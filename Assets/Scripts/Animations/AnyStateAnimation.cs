@@ -1,21 +1,24 @@
-public enum RIG { BODY, LEGS }
-
-public class AnyStateAnimation
+namespace Animations
 {
-    public RIG AnimationRig { get; set; }
+    public enum Rig { Body, Legs }
 
-    public string[] HigherPriority { get; set; }
-
-    public string Name { get; set; }
-
-    public bool Active { get; set; }
-
-    public AnyStateAnimation(RIG rig, string name, params string[] higherPriority)
+    public class AnyStateAnimation
     {
-        AnimationRig = rig;
-        Name = name;
-        HigherPriority = higherPriority;
+        public Rig AnimationRig { get; }
+
+        public string[] HigherPriority { get; }
+
+        public string Name { get; }
+
+        public bool Active { get; set; }
+
+        public AnyStateAnimation(Rig rig, string name, params string[] higherPriority)
+        {
+            AnimationRig = rig;
+            Name = name;
+            HigherPriority = higherPriority;
+        }
+
+
     }
-
-
 }

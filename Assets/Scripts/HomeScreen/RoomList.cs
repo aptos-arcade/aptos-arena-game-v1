@@ -1,41 +1,40 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine;
 
-public class RoomList : MonoBehaviourPunCallbacks
+namespace HomeScreen
 {
-
-    public Transform grid;
-    public GameObject roomNamePrefab;
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public class RoomList : MonoBehaviourPunCallbacks
     {
-        foreach(RoomInfo room in roomList)
+
+        public Transform grid;
+        public GameObject roomNamePrefab;
+
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
-            if(room.RemovedFromList) DeleteRoom(room);
-            else AddRoom(room);
-        }
-    }
-
-    void AddRoom(RoomInfo room)
-    {
-        GameObject roomObject = Instantiate(roomNamePrefab, new Vector2(0, 0), Quaternion.identity);
-        roomObject.transform.SetParent(grid.transform, false);
-        roomObject.GetComponentInChildren<TMP_Text>().text = room.Name;
-    }
-
-    void DeleteRoom(RoomInfo room)
-    {
-        int roomCount = grid.childCount;
-        for(int i = 0; i < roomCount; i++)
-        {
-            if(grid.GetChild(i).GetComponentInChildren<TMP_Text>().text == room.Name)
+            foreach(RoomInfo room in roomList)
             {
-                Destroy(grid.GetChild(i).transform);
-            };
+                if(room.RemovedFromList) DeleteRoom(room);
+                else AddRoom(room);
+            }
+        }
+
+        private void AddRoom(RoomInfo room)
+        {
+            GameObject roomObject = Instantiate(roomNamePrefab, new Vector2(0, 0), Quaternion.identity);
+            roomObject.transform.SetParent(grid.transform, false);
+            roomObject.GetComponentInChildren<TMP_Text>().text = room.Name;
+        }
+
+        private void DeleteRoom(RoomInfo room)
+        {
+            for(int i = 0; i < grid.childCount; i++)
+            {
+                if(grid.GetChild(i).GetComponentInChildren<TMP_Text>().text == room.Name)
+                    Destroy(grid.GetChild(i).transform);
+            }
         }
     }
 }

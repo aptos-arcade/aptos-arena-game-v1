@@ -130,8 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0.2
-  knockbackForce: 1000
-  _collider: {fileID: 3250129155286331358}
+  knockBackForce: 1000
+  swordCollider: {fileID: 3250129155286331358}
   launchX: 4
   launchY: 1
 --- !u!114 &1360409121479388380

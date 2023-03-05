@@ -242,11 +242,9 @@ GameObject:
   - component: {fileID: 146130574}
   - component: {fileID: 146130573}
   - component: {fileID: 146130572}
-  - component: {fileID: 146130576}
   - component: {fileID: 146130579}
   - component: {fileID: 146130578}
   - component: {fileID: 146130577}
-  - component: {fileID: 146130580}
   m_Layer: 8
   m_Name: Platforms
   m_TagString: Untagged
@@ -774,18 +772,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &146130576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146130570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f611b4bfee084d5896c7785efb04c09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!251 &146130577
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -970,18 +956,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
---- !u!114 &146130580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 146130570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f611b4bfee084d5896c7785efb04c09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &233923571
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,20 +3441,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0b134d7b902450e892fe2e266a7cdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectedPlayer: {fileID: 233923572}
+  selectPlayerCanvas: {fileID: 1710171304}
+  spawnCanvas: {fileID: 609804994}
+  portal: {fileID: 1720114799997968, guid: d2e31520ae0c946578b21affc094b68d, type: 3}
   connectedPlayersView: {fileID: 1951015264}
-  _selectPlayerCanvas: {fileID: 1710171304}
-  _spawnCanvas: {fileID: 609804994}
   sceneCamera: {fileID: 1340705564}
-  pingrate: {fileID: 1150283906}
-  timeAmount: 5
-  respawnTimer: {fileID: 1262452733}
   respawnUI: {fileID: 1687374723}
-  localPlayer: {fileID: 0}
   leaveScreen: {fileID: 1537971481}
   feedBox: {fileID: 505616703}
   feedTextPrefab: {fileID: 1637420717155532833, guid: b9f6ef78fb3464c8cb16781496e4c8fc, type: 3}
-  killFeedBox: {fileID: 1986481415}
+  connectedPlayer: {fileID: 233923572}
+  pingRate: {fileID: 1150283906}
+  respawnTimer: {fileID: 1262452733}
+  timeAmount: 5
 --- !u!1 &1876363503
 GameObject:
   m_ObjectHideFlags: 0
@@ -3511,6 +3484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeOutUI: {fileID: 930494964}
+  idleTime: 60
+  timer: 5
   timeOutText: {fileID: 1020422442}
 --- !u!4 &1876363505
 Transform:

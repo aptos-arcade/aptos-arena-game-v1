@@ -1,58 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class PlayerStats
+namespace Player
 {
+    [System.Serializable]
+    public class PlayerStats
+    {
 
-    public Vector2 Direction { get; set; }
+        public Vector2 Direction { get; set; }
+        public float Speed { get; set; }
+        public bool CanDoubleJump { get; set; } = true;
+        public bool CanMove { get; set; } = true;
 
-    public float Speed { get; set; }
+        [SerializeField] private float jumpForce;
+        public float JumpForce => jumpForce;
 
-    [SerializeField]
-    private float jumpForce;
+        [SerializeField] private float doubleJumpForce;
+        public float DoubleJumpForce => doubleJumpForce;
 
-    [SerializeField]
-    private float doubleJumpForce;
+        [SerializeField] private float walkSpeed;
+        public float WalkSpeed => walkSpeed;
 
-    [SerializeField]
-    private float walkSpeed;
+        [SerializeField] private float acceleration;
+        public float Acceleration => acceleration;
 
-    [SerializeField]
-    private float runSpeed;
+        [SerializeField] private float deceleration;
+        public float Deceleration => deceleration;
 
-    [SerializeField]
-    private float acceleration;
+        [SerializeField] private float velPower;
+        public float VelPower => velPower;
 
-    [SerializeField]
-    private float decceleration;
+        [SerializeField] private float knockBackPower;
+        public float KnockBackPower => knockBackPower;
 
-    [SerializeField]
-    private float velPower;
 
-    [SerializeField]
-    private float knockbackPower;
+        private Commands.Weapon _weapon;
+        public Commands.Weapon Weapon { get => _weapon; set => _weapon = value; }
 
-    [SerializeField]
-    private bool canMove = true;
+        private float _damageMultiplier = 1;
+        public float DamageMultiplier { get => _damageMultiplier; set => _damageMultiplier = value; }
 
-    private WEAPON weapon;
+        private string _playerName;
+        public string PlayerName { get => _playerName; set => _playerName = value; }
 
-    private float damageMultiplier = 1;
-
-    private string playerName;
-
-    public float WalkSpeed { get => walkSpeed; }
-    public float JumpForce { get => jumpForce; }
-    public float DoubleJumpForce { get => doubleJumpForce; }
-    public WEAPON Weapon { get => weapon; set => weapon = value; }
-    public string PlayerName { get => playerName; set => playerName = value; }
-    public float Acceleration { get => acceleration; }
-    public float Decceleration { get => decceleration; }
-    public float VelPower { get => velPower; }
-    public bool CanDoubleJump { get; set; } = true;
-    public bool CanMove { get => canMove; set => canMove = value; }
-    public float DamageMultiplier { get => damageMultiplier; set => damageMultiplier = value; }
-    public float KnockbackPower { get => knockbackPower; }
+    }
 }

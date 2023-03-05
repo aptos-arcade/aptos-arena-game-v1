@@ -508,7 +508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897241991922815635, guid: 3db1c2f7d8b06492790cfc5d81280aac, type: 3}
       propertyPath: m_Name
-      value: Button
+      value: UserNameButton
       objectReference: {fileID: 0}
     - target: {fileID: 2897241991922815852, guid: 3db1c2f7d8b06492790cfc5d81280aac, type: 3}
       propertyPath: m_Pivot.x
@@ -877,7 +877,7 @@ GameObject:
   - component: {fileID: 325711490}
   - component: {fileID: 325711489}
   m_Layer: 0
-  m_Name: Messge
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1416,7 +1416,7 @@ GameObject:
   - component: {fileID: 564109562}
   - component: {fileID: 564109561}
   m_Layer: 0
-  m_Name: ReconnectBtn
+  m_Name: ReconnectButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1945,7 +1945,7 @@ GameObject:
   - component: {fileID: 1156526166}
   - component: {fileID: 1156526165}
   m_Layer: 0
-  m_Name: BackToMainMenu
+  m_Name: MainMenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2079,7 +2079,7 @@ GameObject:
   - component: {fileID: 1211060683}
   - component: {fileID: 1211060682}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: DisconnectCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2267,12 +2267,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6db2efdfa5c4efc83517db025828c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ConnectingScreen: {fileID: 1937082269}
-  UserNameScreen: {fileID: 1046565114}
-  ConnectScreen: {fileID: 784199215}
-  CreateUserNameButton: {fileID: 1462048293}
-  UserNameInput: {fileID: 927888627}
-  CreateRoomInput: {fileID: 1693638493}
+  connectingScreen: {fileID: 1937082269}
+  userNameScreen: {fileID: 1046565114}
+  connectScreen: {fileID: 784199215}
+  createUserNameButton: {fileID: 1462048293}
+  userNameInput: {fileID: 927888627}
+  createRoomInput: {fileID: 1693638493}
 --- !u!4 &1285046664
 Transform:
   m_ObjectHideFlags: 0
@@ -2393,10 +2393,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5ce84ec4c0e48caba23b82af816eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DisUi: {fileID: 1211060680}
-  MenuButton: {fileID: 1156526163}
-  ReconnectButton: {fileID: 564109559}
-  StatusText: {fileID: 325711489}
+  disconnectUI: {fileID: 1211060680}
+  menuButton: {fileID: 1156526163}
+  reconnectButton: {fileID: 564109559}
+  statusText: {fileID: 325711489}
 --- !u!4 &1347781345
 Transform:
   m_ObjectHideFlags: 0
@@ -2592,7 +2592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7313314225293870701, guid: d684b02eb3cce44ba88c9824d6a5b084, type: 3}
       propertyPath: m_Name
-      value: TextInput
+      value: UserNameInput
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d684b02eb3cce44ba88c9824d6a5b084, type: 3}
@@ -2918,7 +2918,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1937082270
 RectTransform:
   m_ObjectHideFlags: 0
