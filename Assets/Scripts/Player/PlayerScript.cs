@@ -29,7 +29,7 @@ namespace Player
             if (photonView.IsMine)
             {
                 if (!GameManager.Instance) return;
-                GameManager.Instance.LocalPlayer = gameObject;
+                GameManager.Instance.Player = this;
 
                 var playerPosition = transform.position;
                 playerReferences.PlayerCamera.transform.position = new Vector3(playerPosition.x, playerPosition.y, playerReferences.PlayerCamera.transform.position.z);
@@ -96,8 +96,9 @@ namespace Player
         private void OnDeath()
         {
             PhotonNetwork.Instantiate(playerReferences.ExplosionPrefab.name, transform.position, Quaternion.identity);
-            GameManager.Instance.EnableRespawn();
-            photonView.RPC("ShowDeath", RpcTarget.AllBuffered);
+            photonView.RPC("OnDeath", RpcTarget.AllBuffered);
+            if(PlayerState.Lives == 0) GameManager.Instance.OnPlayerOutOfLives(); 
+            else GameManager.Instance.EnableRespawn();
         }
     }
 }

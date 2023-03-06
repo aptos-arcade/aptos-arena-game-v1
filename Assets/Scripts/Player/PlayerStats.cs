@@ -25,5 +25,11 @@ namespace Player
 
         [SerializeField] private float knockBackPower;
         public float KnockBackPower => knockBackPower;
+
+        [SerializeField] private float strength;
+        public float Strength => strength;
+
+        [SerializeField] private float defense;
+        public float Defense => defense;
     }
 }

@@ -11,10 +11,10 @@ namespace GameManagement
         // singleton pattern
         public static GameManager Instance;
         
-        public GameObject LocalPlayer { get; set; }
+        public PlayerScript Player { get; set; }
 
-        [SerializeField] private GameObject selectPlayerCanvas, spawnCanvas, portal, connectedPlayersView, sceneCamera, 
-            respawnUI, leaveScreen, feedBox, feedTextPrefab;
+        [SerializeField] private GameObject selectPlayerCanvas, spawnButton, portal, connectedPlayersView, sceneCamera, 
+            respawnUI, leaveScreen, feedBox, feedTextPrefab, outOfLivesUI;
         [SerializeField] private ConnectedPlayer connectedPlayer;
         [SerializeField] private TMP_Text pingRate, respawnTimer;
         [SerializeField] private float timeAmount = 5;
@@ -45,12 +45,12 @@ namespace GameManagement
         {
             _characterPrefabName = characterPrefabName;
             selectPlayerCanvas.SetActive(false);
-            spawnCanvas.SetActive(true);
+            spawnButton.SetActive(true);
         }
 
         public void SpawnPlayer()
         {
-            spawnCanvas.SetActive(false);
+            spawnButton.SetActive(false);
             StartCoroutine(SpawnCoroutine());
         }
 
@@ -73,7 +73,7 @@ namespace GameManagement
             if (!(timeAmount <= 0)) return;
             respawnUI.SetActive(false);
             _startRespawn = false;
-            StartCoroutine(LocalPlayer.GetComponent<PlayerScript>().PlayerUtilities.RespawnCoroutine());
+            StartCoroutine(Player.PlayerUtilities.RespawnCoroutine());
         }
 
         public void EnableRespawn()
@@ -88,11 +88,15 @@ namespace GameManagement
             leaveScreen.SetActive(!leaveScreen.activeSelf);
         }
 
-
         public void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
             PhotonNetwork.LoadLevel(0);
+        }
+
+        public void OnPlayerOutOfLives()
+        {
+            outOfLivesUI.SetActive(true);
         }
 
         public override void OnPlayerEnteredRoom(Photon.Realtime.Player player)

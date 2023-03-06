@@ -6,7 +6,6 @@ namespace Player
 {
     public class PlayerRPCs : MonoBehaviourPun
     {
-
         private PlayerScript _player;
     
         // Start is called before the first frame update
@@ -16,25 +15,36 @@ namespace Player
         }
 
         [PunRPC]
-        public void ShowDeath()
+        public void RelocatePlayer(Vector2 newPosition)
         {
-            _player.gameObject.SetActive(false);
-        
+            _player.transform.position = newPosition;
+        }
+
+        [PunRPC]
+        public void OnDeath()
+        {
+            _player.PlayerUtilities.HidePlayer();
+            _player.PlayerReferences.PlayerCanvas.SetActive(false);
+            _player.PlayerReferences.WeaponObjects[(int)_player.PlayerState.Weapon].GetComponent<PhotonView>().RPC("UnEquip", RpcTarget.AllBuffered);
+
             _player.PlayerComponents.RigidBody.velocity = Vector2.zero;
             _player.PlayerComponents.RigidBody.gravityScale = 0;
             _player.PlayerComponents.FootCollider.enabled = false;
 
             _player.PlayerState.Direction = Vector2.zero;
             _player.PlayerState.CanMove = false;
-
-            _player.PlayerReferences.PlayerCanvas.SetActive(false);
+            _player.PlayerState.Lives--;
+            _player.PlayerReferences.PlayerLives.GetChild(_player.PlayerState.Lives).GetComponent<PhotonView>().RPC("Hide", RpcTarget.AllBuffered);
+            
         }
 
         [PunRPC]
         public void OnRevive()
         {
-            _player.gameObject.SetActive(true);
-        
+            _player.PlayerUtilities.ShowPlayer();
+            _player.PlayerReferences.PlayerCanvas.SetActive(true);
+            _player.PlayerReferences.WeaponObjects[(int)_player.PlayerState.Weapon].GetComponent<PhotonView>().RPC("Equip", RpcTarget.AllBuffered);
+
             _player.PlayerComponents.RigidBody.gravityScale = 5;
             _player.PlayerComponents.FootCollider.enabled = true;
 
@@ -42,7 +52,6 @@ namespace Player
             _player.PlayerState.DamageMultiplier = 1;
 
             _player.PlayerReferences.DamageDisplay.text = "0%";
-            _player.PlayerReferences.PlayerCanvas.SetActive(true);
         }
 
         [PunRPC]

@@ -47,5 +47,9 @@ namespace Player
 
         [SerializeField] private GameObject portal;
         public GameObject Portal => portal;
+
+
+        [SerializeField] private Transform playerLives;
+        public Transform PlayerLives { get => playerLives; set => playerLives = value; }
     }
 }

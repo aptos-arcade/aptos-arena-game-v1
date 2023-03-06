@@ -8,10 +8,10 @@ namespace HomeScreen
 {
     public class MenuManager : MonoBehaviourPunCallbacks
     {
-        [SerializeField] private GameObject connectingScreen, userNameScreen, connectScreen, createUserNameButton;
+        [SerializeField] private GameObject connectingScreen, userNameScreen, createUserNameButton, roomsScreen;
 
-        [SerializeField] private TMP_InputField userNameInput, createRoomInput;
-
+        [SerializeField] private TMP_InputField userNameInput;
+        
         private void Awake()
         {
             PhotonNetwork.ConnectUsingSettings();
@@ -29,31 +29,22 @@ namespace HomeScreen
             connectingScreen.SetActive(false);
             userNameScreen.SetActive(true);
         }
-
+        
         public override void OnJoinedRoom()
         {
             PhotonNetwork.LoadLevel(1);
         }
-
-        #region UIMethods
-
+        
         public void OnClickCreateNameButton()
         {
             PhotonNetwork.NickName = userNameInput.text;
             userNameScreen.SetActive(false);
-            connectScreen.SetActive(true);
+            roomsScreen.SetActive(true);
         }
 
         public void OnNameFieldChange()
         {
             createUserNameButton.GetComponent<Button>().interactable = userNameInput.text.Length >= 2;
         }
-
-        public void OnClickCreateRoom()
-        {
-            PhotonNetwork.CreateRoom(createRoomInput.text, new RoomOptions { MaxPlayers = 4 });
-        }
-
-        #endregion
     }
 }

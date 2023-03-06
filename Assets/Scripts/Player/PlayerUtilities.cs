@@ -108,8 +108,8 @@ namespace Player
     
         public IEnumerator RespawnCoroutine()
         {
-            Vector2 spawnPosition = new Vector2(Random.Range(-8, 8), 7);
-            _player.transform.position = spawnPosition;
+            var spawnPosition = new Vector2(Random.Range(-8, 8), 7);
+            _player.photonView.RPC("RelocatePlayer", RpcTarget.AllBuffered, spawnPosition);
             GameObject portal = PhotonNetwork.Instantiate(
                 _player.PlayerReferences.Portal.name,
                 spawnPosition,
@@ -126,6 +126,16 @@ namespace Player
             {
                 _player.PlayerComponents.PlayerSprites.Add(transform.GetComponent<SpriteRenderer>());
             }
+        }
+
+        public void HidePlayer()
+        {
+            _player.PlayerComponents.PlayerSprites.ForEach(sprite => sprite.enabled = false);
+        }
+        
+        public void ShowPlayer()
+        {
+            _player.PlayerComponents.PlayerSprites.ForEach(sprite => sprite.enabled = true);
         }
     }
 }
