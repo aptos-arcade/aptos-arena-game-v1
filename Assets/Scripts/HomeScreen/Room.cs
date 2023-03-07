@@ -23,7 +23,7 @@ namespace HomeScreen
         
         private void OnClickJoinRoom()
         {
-            PhotonNetwork.JoinRandomOrCreateRoom(roomOptions: new RoomOptions {MaxPlayers = maxPlayers});
+            PhotonNetwork.JoinRandomOrCreateRoom(roomOptions: new RoomOptions {MaxPlayers = maxPlayers}, expectedMaxPlayers: maxPlayers);
         }
     }
 }

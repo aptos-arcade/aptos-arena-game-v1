@@ -15,12 +15,12 @@ namespace Player
         public PlayerUtilities(PlayerScript player)
         {
             _player = player;
-            _commands.Add(new JumpCommand(player, KeyCode.Space));
-            _commands.Add(new DropCommand(player, KeyCode.S));
+            _commands.Add(new JumpCommand(player, KeyCode.UpArrow));
             _commands.Add(new DropCommand(player, KeyCode.DownArrow));
-            _commands.Add(new AttackCommand(player, KeyCode.RightShift));
-            _commands.Add(new WeaponSwapCommand(player, Weapon.Gun, KeyCode.Alpha1));
-            _commands.Add(new WeaponSwapCommand(player, Weapon.Sword, KeyCode.Alpha2));
+            _commands.Add(new ShootCommand(player, KeyCode.Alpha1));
+            _commands.Add(new MeleeCommand(player, KeyCode.Alpha2));
+            // _commands.Add(new WeaponSwapCommand(player, Weapon.Gun, KeyCode.Alpha1));
+            // _commands.Add(new WeaponSwapCommand(player, Weapon.Sword, KeyCode.Alpha2));
         }
 
         public void HandleInput()

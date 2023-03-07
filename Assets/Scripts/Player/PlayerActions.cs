@@ -90,12 +90,10 @@ namespace Player
 
         public void Shoot(string animation)
         {
-            if(animation == "Shoot" && _player.photonView.IsMine)
-            {
-                GameObject projectile = PhotonNetwork.Instantiate(_player.PlayerReferences.ProjectilePrefab.name, _player.PlayerReferences.GunBarrel.position, Quaternion.identity);
-                Vector2 direction = new Vector2(_player.transform.localScale.x, 0);
-                projectile.GetComponent<PhotonView>().RPC("SetDirection", RpcTarget.All, direction);
-            }
+            if (animation != "Shoot" || !_player.photonView.IsMine) return;
+            GameObject projectile = PhotonNetwork.Instantiate(_player.PlayerReferences.ProjectilePrefab.name, _player.PlayerReferences.GunBarrel.position, Quaternion.identity);
+            Vector2 direction = new Vector2(_player.transform.localScale.x, 0);
+            projectile.GetComponent<PhotonView>().RPC("SetDirection", RpcTarget.All, direction);
         }
     }
 }

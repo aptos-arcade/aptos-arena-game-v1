@@ -37,8 +37,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 400, y: 100}
+  m_AnchoredPosition: {x: 0.4804077, y: -50.927704}
+  m_SizeDelta: {x: 400.9609, y: 201.8555}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6839781785220249434
 MonoBehaviour:
@@ -59,10 +59,10 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 4
   m_Spacing: 8
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
-  m_ChildControlHeight: 0
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 6839781786459952457}
   - component: {fileID: 6839781786459952459}
   - component: {fileID: 6839781786459952458}
-  - component: {fileID: 26085178909003936}
+  - component: {fileID: 1683948180294032694}
   m_Layer: 5
   m_Name: RoomName
   m_TagString: Untagged
@@ -119,7 +119,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 38.1645}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6839781786459952459
 CanvasRenderer:
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &26085178909003936
+--- !u!114 &1683948180294032694
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -291,7 +291,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2897241991922815852, guid: 3db1c2f7d8b06492790cfc5d81280aac, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2897241991922815852, guid: 3db1c2f7d8b06492790cfc5d81280aac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -364,7 +364,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2897241991922815635, guid: 3db1c2f7d8b06492790cfc5d81280aac, type: 3}
   m_PrefabInstance: {fileID: 6839781785943602080}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6438344637282722892
+--- !u!114 &232739841467852083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: -1
+  m_PreferredWidth: 100
   m_PreferredHeight: -1
   m_FlexibleWidth: 0
   m_FlexibleHeight: -1

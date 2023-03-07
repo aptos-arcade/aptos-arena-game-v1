@@ -3,18 +3,19 @@ using UnityEngine;
 
 namespace Commands
 {
-    public class AttackCommand : Command
+    public class ShootCommand : Command
     {
 
         private readonly PlayerScript _player;
 
-        public AttackCommand(PlayerScript player, KeyCode key) : base(key)
+        public ShootCommand(PlayerScript player, KeyCode key) : base(key)
         {
             _player = player;
         }
 
         public override void GetKeyDown()
         {
+            _player.PlayerActions.TrySwapWeapon(Weapon.Gun);
             _player.PlayerActions.Attack();
         }
     }

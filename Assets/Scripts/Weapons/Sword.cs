@@ -6,6 +6,8 @@ namespace Weapons
 {
     public class Sword : Weapon
     {
+        
+        [SerializeField] private PlayerScript owner;
 
         [SerializeField] private float damage;
 
@@ -29,7 +31,7 @@ namespace Weapons
                 "OnStrike",
                 RpcTarget.AllBuffered,
                 hitDirection,
-                knockBackForce,
+                knockBackForce * owner.PlayerStats.Strength,
                 damage
             );
         }

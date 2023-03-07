@@ -38,6 +38,7 @@ namespace GameManagement
             {
                 characterPickerUI.SetActive(true);
                 matchmakingUI.SetActive(false);
+                PhotonNetwork.CurrentRoom.IsOpen = false;
             }
             else
             {

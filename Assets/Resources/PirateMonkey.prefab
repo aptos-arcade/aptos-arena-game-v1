@@ -1221,6 +1221,14 @@ PrefabInstance:
       propertyPath: m_Bounds.m_Extent.y
       value: 0.1308707
       objectReference: {fileID: 0}
+    - target: {fileID: 1842134317411011011, guid: 900c183300bd04612aecb9f50e7f43af, type: 3}
+      propertyPath: owner
+      value: 
+      objectReference: {fileID: 844259614977989141}
+    - target: {fileID: 1842134317411011011, guid: 900c183300bd04612aecb9f50e7f43af, type: 3}
+      propertyPath: knockBackForce
+      value: 700
+      objectReference: {fileID: 0}
     - target: {fileID: 1954877223672389548, guid: 900c183300bd04612aecb9f50e7f43af, type: 3}
       propertyPath: m_Bounds.m_Center.x
       value: -0.0004146546
