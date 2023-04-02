@@ -5,19 +5,13 @@ using UnityEngine;
 
 namespace Weapons
 {
-    public class Projectile : MonoBehaviourPun
+    public class Projectile: Striker
     {
         [SerializeReference]
         private float speed;
         
         [SerializeField]
         private float destroyTime;
-
-        [SerializeField]
-        private float damage;
-
-        [SerializeField]
-        private float knockBackForce;
 
         private Vector2 _direction;
         
@@ -37,12 +31,16 @@ namespace Weapons
         public void SetDirection(Vector2 direction)
         {
             _direction = direction;
+            KnockBackSignedDirection = new Vector2(
+                direction.x > 0 ? KnockBackDirection.x : -KnockBackDirection.x,
+                KnockBackDirection.y
+            );
         }
 
         [PunRPC]
         public void Destroy()
         {
-            PhotonNetwork.Destroy(this.gameObject);
+            PhotonNetwork.Destroy(gameObject);
         }
 
         private IEnumerator DestroyBullet()
@@ -50,24 +48,10 @@ namespace Weapons
             yield return new WaitForSeconds(destroyTime);
             photonView.RPC("Destroy", RpcTarget.AllBuffered);
         }
-
-        private void OnTriggerEnter2D(Collider2D collision)
+        
+        protected override void OnStrike()
         {
-            if (!photonView.IsMine) return;
-
-            PlayerScript playerScript = collision.gameObject.GetComponent<PlayerScript>();
-            if (playerScript != null)
-            {
-                Vector2 collisionDirection = playerScript.transform.position - transform.position;
-                playerScript.photonView.RPC(
-                    "OnStrike",
-                    RpcTarget.AllBuffered,
-                    collisionDirection,
-                    knockBackForce,
-                    damage
-                );
-                photonView.RPC("Destroy", RpcTarget.AllBuffered);
-            }
+            photonView.RPC("Destroy", RpcTarget.AllBuffered);
         }
     }
 }

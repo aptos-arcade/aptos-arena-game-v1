@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 3250129155286331114}
   - component: {fileID: 3250129155286331384}
   - component: {fileID: 3250129155286331358}
-  - component: {fileID: 3250129155286329476}
   - component: {fileID: 1360409121479388380}
   - component: {fileID: 2014176629078149444}
   - component: {fileID: 7182211847309237717}
+  - component: {fileID: -2907680703860561143}
+  - component: {fileID: -5787655561774554484}
   m_Layer: 6
   m_Name: Sword
   m_TagString: Untagged
@@ -117,23 +118,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &3250129155286329476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3250129155286330860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c38e6153f10094754910d191ea6ddbeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 0.2
-  knockBackForce: 1000
-  swordCollider: {fileID: 3250129155286331358}
-  launchX: 4
-  launchY: 1
 --- !u!114 &1360409121479388380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,8 +167,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d1f04524a11a8473bb11ea96c7ca9d6b, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: b362e721fefc34b97a12028e4ac6831f, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -269,6 +253,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-2907680703860561143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250129155286330860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d887ac7d9732c424496d49a3efea3cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 7182211847309237717}
+--- !u!114 &-5787655561774554484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3250129155286330860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66120a01bd5a45a589809313834b7693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0.4
+  knockBackForce: 1000
+  knockBackDirection: {x: 4, y: 1}
+  hitEffect: {fileID: 9217778773954796174, guid: 6b6df489d013648aab6325352fa892cc, type: 3}
+  ownerTransform: {fileID: 0}
 --- !u!1 &3250129155286330876
 GameObject:
   m_ObjectHideFlags: 0

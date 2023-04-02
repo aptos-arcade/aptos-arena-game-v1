@@ -61,7 +61,7 @@ namespace GameManagement
         private void LeaveRoom()
         {
             PhotonNetwork.LeaveRoom();
-            PhotonNetwork.LoadLevel(0);
+            PhotonNetwork.LoadLevel(4);
         }
     }
 }

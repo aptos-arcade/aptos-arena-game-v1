@@ -1,3 +1,6 @@
+using System;
+using Characters;
+using ExitGames.Client.Photon;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
@@ -14,16 +17,38 @@ namespace HomeScreen
         [SerializeField] private TMP_Text roomNameText;
         
         [SerializeField] private UnityEngine.UI.Button joinRoomButton;
+        
+        
 
         private void Start()
         {
-            roomNameText.text = roomName + " (" + maxPlayers + " Player" + (maxPlayers > 1 ? "s" : "") + ")";
+            var teamSize = maxPlayers / 2;
+            roomNameText.text = roomName + " (" + (teamSize > 0 ? (teamSize + "v" + teamSize) : "Solo") + ")" ;
             joinRoomButton.onClick.AddListener(OnClickJoinRoom);
         }
         
         private void OnClickJoinRoom()
         {
-            PhotonNetwork.JoinRandomOrCreateRoom(roomOptions: new RoomOptions {MaxPlayers = maxPlayers}, expectedMaxPlayers: maxPlayers);
+            var playerTeam = ((CharactersEnum)PhotonNetwork.LocalPlayer.CustomProperties["Character"]).ToString();
+            
+            var roomOptions = new RoomOptions
+            {
+                MaxPlayers = maxPlayers
+            };
+            var customRoomProperties = new Hashtable();
+            var charEnums = Enum.GetNames(typeof(CharactersEnum));
+            foreach(var charEnum in charEnums)
+            {
+                customRoomProperties.Add(charEnum, true);
+            }
+            roomOptions.CustomRoomProperties = customRoomProperties;
+            roomOptions.CustomRoomPropertiesForLobby = charEnums;
+            
+            PhotonNetwork.JoinRandomOrCreateRoom(
+                roomOptions: roomOptions,
+                expectedMaxPlayers: maxPlayers,
+                expectedCustomRoomProperties: new Hashtable(){ { playerTeam, true } }
+            );
         }
     }
 }

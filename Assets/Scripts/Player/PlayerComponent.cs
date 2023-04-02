@@ -36,7 +36,16 @@ namespace Player
 
         [SerializeField] private PlayerCamera playerCamera;
         public PlayerCamera PlayerCamera => playerCamera;
-    
+        
+        [SerializeField] private AudioSource jumpAudioSource;
+        public AudioSource JumpAudioSource => jumpAudioSource;
+        
+        [SerializeField] private AudioSource hitAudioSource;
+        public AudioSource HitAudioSource => hitAudioSource;
+        
+        [SerializeField] private AudioSource runAudioSource;
+        public AudioSource RunAudioSource => runAudioSource;
+
         private List<SpriteRenderer> _playerSprites = new();
         public List<SpriteRenderer> PlayerSprites { get => _playerSprites; set => _playerSprites = value; }
     }

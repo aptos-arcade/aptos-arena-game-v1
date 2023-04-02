@@ -1,3 +1,4 @@
+using Characters;
 using UnityEngine;
 
 namespace Player
@@ -8,7 +9,7 @@ namespace Player
         
         public bool CanDoubleJump { get; set; } = true;
         
-        public bool CanMove { get; set; } = true;
+        public bool CanMove { get; set; } = false;
         
         public Commands.Weapon Weapon { get; set; }
         
@@ -17,5 +18,7 @@ namespace Player
         public string PlayerName { get; set; }
 
         public int Lives { get; set; } = 3;
+        
+        public CharactersEnum Character { get; set; }
     }
 }

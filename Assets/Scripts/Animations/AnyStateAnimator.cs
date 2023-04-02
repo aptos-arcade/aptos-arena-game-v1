@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
@@ -60,8 +61,8 @@ namespace Animations
                     currentAnimation = newAnimation;
                 }
                 else if(
-                    currentAnimation != newAnimation
-                    && !_animations[newAnimation].HigherPriority.Contains(currentAnimation)
+                    (currentAnimation != newAnimation
+                     && !_animations[newAnimation].HigherPriority.Contains(currentAnimation))
                     || !_animations[currentAnimation].Active
                 )
                 {

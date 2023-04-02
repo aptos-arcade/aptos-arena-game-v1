@@ -13,7 +13,7 @@ namespace Player
 
         private IEnumerator DestroyCoroutine()
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(2);
             PhotonNetwork.Destroy(gameObject);
         }
     }

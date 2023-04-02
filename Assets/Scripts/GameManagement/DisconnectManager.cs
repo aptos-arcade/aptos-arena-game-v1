@@ -15,7 +15,7 @@ namespace GameManagement
     
         private void Awake()
         {
-            DontDestroyOnLoad(this.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Update()

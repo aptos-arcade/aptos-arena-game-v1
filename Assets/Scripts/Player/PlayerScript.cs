@@ -1,7 +1,9 @@
 using Animations;
+using Characters;
 using GameManagement;
 using Photon.Pun;
 using UnityEngine;
+using Weapons;
 
 namespace Player
 {
@@ -21,7 +23,7 @@ namespace Player
 
         public PlayerUtilities PlayerUtilities { get; private set; }
         
-        public PlayerState PlayerState { get; private set; } = new();
+        public PlayerState PlayerState { get; } = new();
 
         // Start is called before the first frame update
         private void Awake()
@@ -41,8 +43,11 @@ namespace Player
             }
             else
             {
+                playerReferences.NameTag.color = (CharactersEnum)photonView.Owner.CustomProperties["Character"] == 
+                                                 (CharactersEnum)PhotonNetwork.LocalPlayer.CustomProperties["Character"] 
+                    ? new Color(0.6588235f, 0.8078431f, 1f) 
+                    : Color.red;
                 playerReferences.NameTag.text = photonView.Owner.NickName;
-                playerReferences.NameTag.color = Color.red;
             }
         }
 
@@ -50,11 +55,11 @@ namespace Player
         // Start is called before the first frame update
         private void Start()
         {
-            Debug.Log("Start");
             PlayerActions = new PlayerActions(this);
             PlayerUtilities = new PlayerUtilities(this);
 
             PlayerState.PlayerName = PhotonNetwork.NickName;
+            PlayerState.Character = (CharactersEnum)PhotonNetwork.LocalPlayer.CustomProperties["Character"];
 
             AnyStateAnimation[] animations = {
                 new(Rig.Body, "Body_Idle", "Body_Attack"),
@@ -72,9 +77,14 @@ namespace Player
 
             playerComponent.Animator.AnimationTriggerEvent += PlayerActions.Shoot;
             playerComponent.Animator.AddAnimations(animations);
+
             PlayerUtilities.GetSpriteRenderers();
 
             playerReferences.DamageDisplay.text = ((PlayerState.DamageMultiplier - 1) * 100) + "%";
+            
+
+            Debug.Log(transform.position);
+            StartCoroutine(PlayerUtilities.RespawnCoroutine(transform.position));
         }
 
         // Update is called once per frame

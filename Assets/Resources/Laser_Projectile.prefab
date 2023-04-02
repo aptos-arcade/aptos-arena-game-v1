@@ -99,10 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7891e93df7009487cb4090de388ddfb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0.3
+  knockBackForce: 200
+  knockBackDirection: {x: 1, y: 1}
+  hitEffect: {fileID: 8135828751740396634, guid: 3d009ef25395e4a19a694bc559f346b5, type: 3}
   speed: 30
   destroyTime: 3
-  damage: 0.4
-  knockBackForce: 200
 --- !u!61 &4903458207253830477
 BoxCollider2D:
   m_ObjectHideFlags: 0

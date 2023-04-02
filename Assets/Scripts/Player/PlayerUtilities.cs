@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Commands;
 using Photon.Pun;
 using UnityEngine;
+using Weapons;
 
 namespace Player
 {
@@ -17,10 +18,8 @@ namespace Player
             _player = player;
             _commands.Add(new JumpCommand(player, KeyCode.UpArrow));
             _commands.Add(new DropCommand(player, KeyCode.DownArrow));
-            _commands.Add(new ShootCommand(player, KeyCode.Alpha1));
-            _commands.Add(new MeleeCommand(player, KeyCode.Alpha2));
-            // _commands.Add(new WeaponSwapCommand(player, Weapon.Gun, KeyCode.Alpha1));
-            // _commands.Add(new WeaponSwapCommand(player, Weapon.Sword, KeyCode.Alpha2));
+            _commands.Add(new ShootCommand(player, KeyCode.Space));
+            _commands.Add(new MeleeCommand(player, KeyCode.LeftShift));
         }
 
         public void HandleInput()
@@ -54,12 +53,12 @@ namespace Player
 
         public bool IsOnGround()
         {
-            return _player.PlayerComponents.RigidBody.IsTouchingLayers(_player.PlayerComponents.Ground.value);
+            return _player.PlayerComponents.FootCollider.IsTouchingLayers(_player.PlayerComponents.Ground.value);
         }
 
         public bool IsOnPlatform()
         {
-            return _player.PlayerComponents.RigidBody.IsTouchingLayers(_player.PlayerComponents.Platform.value);
+            return _player.PlayerComponents.FootCollider.IsTouchingLayers(_player.PlayerComponents.Platform.value);
         }
 
         public void HandleAir()
@@ -80,12 +79,24 @@ namespace Player
             return _player.PlayerComponents.RigidBody.velocity.y < 0 && !IsGrounded();
         }
 
+        public void StrikerCollision(Striker striker)
+        {
+            _player.photonView.RPC(
+                "OnStrike",
+                RpcTarget.AllBuffered,
+                striker.KnockBackSignedDirection,
+                striker.KnockBackForce,
+                striker.Damage
+            );
+        }
+
         public void HandleStrike(Vector2 direction, float knockBack, float damage)
         {
             _player.PlayerComponents.RigidBody.AddForce(direction.normalized * (knockBack * Mathf.Pow(_player.PlayerState.DamageMultiplier, _player.PlayerStats.KnockBackPower)));
             _player.PlayerState.DamageMultiplier += damage;
             _player.PlayerReferences.DamageDisplay.text = ((_player.PlayerState.DamageMultiplier - 1) * 100).ToString("F0") + "%";
             _player.StartCoroutine(_player.PlayerComponents.PlayerCamera.Shake(0.2f, 0.1f));
+            _player.PlayerComponents.HitAudioSource.Play();
         }
 
         public void StartHurt()
@@ -106,9 +117,9 @@ namespace Player
             }
         }
     
-        public IEnumerator RespawnCoroutine()
+        public IEnumerator RespawnCoroutine(Vector3 spawnPosition)
         {
-            var spawnPosition = new Vector2(Random.Range(-8, 8), 7);
+            Debug.Log(spawnPosition);
             _player.photonView.RPC("RelocatePlayer", RpcTarget.AllBuffered, spawnPosition);
             GameObject portal = PhotonNetwork.Instantiate(
                 _player.PlayerReferences.Portal.name,

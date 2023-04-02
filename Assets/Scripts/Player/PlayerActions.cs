@@ -29,11 +29,16 @@ namespace Player
                 _player.PlayerReferences.PlayerCanvas.transform.localScale = new Vector3(direction, 1, 1);
                 _player.PlayerComponents.Animator.TryPlayAnimation("Body_Walk");
                 _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Walk");
+                if (!_player.PlayerComponents.RunAudioSource.isPlaying)
+                {
+                    _player.PlayerComponents.RunAudioSource.Play();
+                }
             }
-            else if(_player.PlayerComponents.RigidBody.velocity.magnitude < 0.01f)
+            else if(_player.PlayerComponents.RigidBody.velocity.magnitude < 0.1f)
             {
                 _player.PlayerComponents.Animator.TryPlayAnimation("Body_Idle");
                 _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Idle");
+                _player.PlayerComponents.RunAudioSource.Stop();
             }
         }
 
@@ -41,22 +46,26 @@ namespace Player
         {
             if (_player.PlayerUtilities.IsGrounded())
             {
+                _player.PlayerComponents.RigidBody.velocity = new Vector2(_player.PlayerComponents.RigidBody.velocity.x, 0);
                 _player.PlayerComponents.RigidBody.AddForce(new Vector2(0, _player.PlayerStats.JumpForce));
                 _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Jump");
                 _player.PlayerComponents.Animator.TryPlayAnimation("Body_Jump");
+                _player.PlayerComponents.JumpAudioSource.Play();
             }
             else if(_player.PlayerState.CanDoubleJump)
             {
                 _player.PlayerComponents.RigidBody.velocity = new Vector2(_player.PlayerComponents.RigidBody.velocity.x, 0);
                 _player.PlayerComponents.RigidBody.AddForce(new Vector2(0, _player.PlayerStats.DoubleJumpForce));
                 _player.PlayerState.CanDoubleJump = false;
+                _player.PlayerComponents.JumpAudioSource.Play();
             }
         }
 
         public void Attack()
         {
-            _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Attack");
+            // _player.PlayerComponents.Animator.TryPlayAnimation("Legs_Attack");
             _player.PlayerComponents.Animator.TryPlayAnimation("Body_Attack");
+            _player.PlayerReferences.WeaponObjects[(int)_player.PlayerState.Weapon].GetComponent<Weapons.Weapon>().PlaySound();
         }
 
         public void TrySwapWeapon(Commands.Weapon weapon)

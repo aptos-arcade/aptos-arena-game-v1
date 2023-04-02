@@ -15,9 +15,9 @@ namespace Player
         }
 
         [PunRPC]
-        public void RelocatePlayer(Vector2 newPosition)
+        public void RelocatePlayer(Vector3 newPosition)
         {
-            _player.transform.position = newPosition;
+            transform.position = newPosition;
         }
 
         [PunRPC]
@@ -30,6 +30,7 @@ namespace Player
             _player.PlayerComponents.RigidBody.velocity = Vector2.zero;
             _player.PlayerComponents.RigidBody.gravityScale = 0;
             _player.PlayerComponents.FootCollider.enabled = false;
+            _player.PlayerComponents.BodyCollider.enabled = false;
 
             _player.PlayerState.Direction = Vector2.zero;
             _player.PlayerState.CanMove = false;
@@ -47,6 +48,7 @@ namespace Player
 
             _player.PlayerComponents.RigidBody.gravityScale = 5;
             _player.PlayerComponents.FootCollider.enabled = true;
+            _player.PlayerComponents.BodyCollider.enabled = true;
 
             _player.PlayerState.CanMove = true;
             _player.PlayerState.DamageMultiplier = 1;

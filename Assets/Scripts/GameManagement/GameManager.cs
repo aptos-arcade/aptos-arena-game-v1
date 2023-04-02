@@ -1,4 +1,6 @@
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using Characters;
 using Photon.Pun;
 using Player;
 using TMPro;
@@ -13,11 +15,17 @@ namespace GameManagement
         
         public PlayerScript Player { get; set; }
 
-        [SerializeField] private GameObject selectPlayerCanvas, spawnButton, portal, connectedPlayersView, sceneCamera, 
-            respawnUI, leaveScreen, feedBox, feedTextPrefab, outOfLivesUI;
+        [SerializeField] private GameObject spawnButton, connectedPlayersView, sceneCamera, respawnUI, 
+            leaveScreen, feedBox, feedTextPrefab, outOfLivesUI;
         [SerializeField] private ConnectedPlayer connectedPlayer;
         [SerializeField] private TMP_Text pingRate, respawnTimer;
         [SerializeField] private float timeAmount = 5;
+        [SerializeField] private Transform[] spawnPositions;
+        [SerializeField] private LayerMask playerLayer;
+        
+        private Dictionary<CharactersEnum, int> _teamCounts;
+        private Dictionary<CharactersEnum, int> _teamSpawnPositions;
+        private int _numTeams;
 
         private string _characterPrefabName;
         private bool _startRespawn;
@@ -29,8 +37,12 @@ namespace GameManagement
 
         private void Start()
         {
+            _characterPrefabName = Characters.Characters.AvailableCharacters[(CharactersEnum)PhotonNetwork.LocalPlayer
+                .CustomProperties["Character"]].PrefabName;
             connectedPlayer.AddLocalPlayer();
             connectedPlayer.GetComponent<PhotonView>().RPC("UpdatePlayerList", RpcTarget.OthersBuffered, PhotonNetwork.NickName);
+            ProcessTeams();
+            Physics2D.IgnoreLayerCollision(playerLayer, playerLayer);
         }
     
         private void Update()
@@ -38,32 +50,17 @@ namespace GameManagement
             if (_startRespawn) StartRespawn();
             if (Input.GetKeyDown(KeyCode.Escape)) ToggleLeaveScreen();
             connectedPlayersView.SetActive(Input.GetKey(KeyCode.Tab));
-            pingRate.text = "Ping: " + PhotonNetwork.GetPing();
+            var ping = PhotonNetwork.GetPing();
+            pingRate.text = "Ping: " + ping;
+            pingRate.color = ping > 100 ? Color.red : new Color(0.6588235f, 0.8078431f, 1f) ;
         }
-
-        public void SelectCharacter(string characterPrefabName)
-        {
-            _characterPrefabName = characterPrefabName;
-            selectPlayerCanvas.SetActive(false);
-            spawnButton.SetActive(true);
-        }
-
         public void SpawnPlayer()
         {
             spawnButton.SetActive(false);
-            StartCoroutine(SpawnCoroutine());
-        }
-
-        private IEnumerator SpawnCoroutine()
-        {
-            Vector2 spawnLocation = new Vector2(Random.Range(-8f, 8f), 7);
-            GameObject portalObj = PhotonNetwork.Instantiate(portal.name, spawnLocation, Quaternion.identity);
-            var curPos = sceneCamera.transform.position;
-            sceneCamera.transform.position = new Vector3(spawnLocation.x, curPos.y, curPos.z);
-            yield return new WaitForSeconds(2.5f);
-            PhotonNetwork.Destroy(portalObj);
-            PhotonNetwork.Instantiate(_characterPrefabName, spawnLocation, Quaternion.identity);
             sceneCamera.SetActive(false);
+            Vector2 spawnLocation = spawnPositions[_teamSpawnPositions[(CharactersEnum)PhotonNetwork.LocalPlayer
+                .CustomProperties["Character"]]].position;
+            PhotonNetwork.Instantiate(_characterPrefabName, spawnLocation, Quaternion.identity);
         }
 
         private void StartRespawn()
@@ -73,7 +70,9 @@ namespace GameManagement
             if (!(timeAmount <= 0)) return;
             respawnUI.SetActive(false);
             _startRespawn = false;
-            StartCoroutine(Player.PlayerUtilities.RespawnCoroutine());
+            Vector3 spawnLocation = spawnPositions[_teamSpawnPositions[(CharactersEnum)PhotonNetwork.LocalPlayer
+                .CustomProperties["Character"]]].position;
+            StartCoroutine(Player.PlayerUtilities.RespawnCoroutine(spawnLocation));
         }
 
         public void EnableRespawn()
@@ -110,10 +109,28 @@ namespace GameManagement
         public override void OnPlayerLeftRoom(Photon.Realtime.Player player)
         {
             connectedPlayer.RemovePlayerFromList(player.NickName);
+            _teamCounts[(CharactersEnum) player.CustomProperties["Character"]]--;
             GameObject go = Instantiate(feedTextPrefab, new Vector2(0f, 0f), Quaternion.identity);
             go.transform.SetParent(feedBox.transform);
             go.GetComponent<TMP_Text>().text = player.NickName + " has left the game";
             Destroy(go, 3f);
+        }
+
+        private void ProcessTeams()
+        {
+            var teamCounts = new Dictionary<CharactersEnum, int>();
+            foreach (var player in PhotonNetwork.PlayerList)
+            {
+                var playerTeam = (CharactersEnum) player.CustomProperties["Character"];
+                if (teamCounts.ContainsKey(playerTeam)) teamCounts[playerTeam]++;
+                else teamCounts.Add(playerTeam, 1);
+            }
+            _teamCounts = teamCounts;
+            
+            _teamSpawnPositions = teamCounts.Keys
+                .OrderBy(team => (int)team)
+                .Select((team, i) => new { Team = team, Index = i })
+                .ToDictionary(team => team.Team, team => team.Index % spawnPositions.Length);
         }
     }
 }

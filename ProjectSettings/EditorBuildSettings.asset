@@ -6,7 +6,22 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/HomeScreen.unity
+    path: Assets/Scenes/GameModeScreen.unity
+    guid: 9390c8bb35fc0473480381245f1584fd
+  - enabled: 1
+    path: Assets/Scenes/LoginScreen.unity
+    guid: a6f1a4ec16f314318b4f8a00ac5ffd24
+  - enabled: 1
+    path: Assets/Scenes/WalletScreen.unity
+    guid: 73f153fef872d45ccafefedf83a67e3c
+  - enabled: 1
+    path: Assets/Scenes/ChooseCharacterScreen.unity
+    guid: 459d36f80e5a3479f9589116345f8143
+  - enabled: 1
+    path: Assets/Scenes/RankedChooseCharacter.unity
+    guid: b58763b6a7b31485284f22c3b6280403
+  - enabled: 1
+    path: Assets/Scenes/RoomsScreen.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/Gameplay.unity
