@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Aptos;
 using Characters;
@@ -18,16 +19,23 @@ namespace HomeScreen
 
         [SerializeField] private TMP_Text accountAddressText;
         
-        [SerializeField] private GameObject noRankedCharactersText;
+        [SerializeField] private TMP_Text noRankedCharactersText;
 
         [SerializeField] private Button backButton;
-
+        
+        private readonly List<GameObject> _characterCards = new();
+        
         [DllImport ("__Internal")]
         static extern void RankedCharacterSelectScreenLoad ();
-
-        public void Start()
+        
+        private void Awake()
         {
-            accountAddressText.text = "Connected: " + WalletManager.Ellipsis(WalletManager.Instance.Address, 8);
+            WalletManager.OnConnectEvent += UpdateConnectedAddress;
+        }
+
+        private void Start()
+        {
+            UpdateConnectedAddress(WalletManager.Instance.Address);
             backButton.onClick.AddListener(OnBack);
             
             #if UNITY_WEBGL && !UNITY_EDITOR
@@ -35,9 +43,14 @@ namespace HomeScreen
             #endif
         }
         
+        private void UpdateConnectedAddress(string address)
+        {
+            accountAddressText.text = "Connected: " + WalletManager.Ellipsis(address, 8);
+        }   
+
         public void AddCharacter(int characterEnumValue)
         {
-            noRankedCharactersText.SetActive(false);
+            noRankedCharactersText.alpha = 0;
             var characterEnum = (CharactersEnum) characterEnumValue;
             var character = Instantiate(characterCardPrefab, characterGrid.transform);
             character.GetComponent<CharacterCard>().InitializeCharacterCard(
@@ -45,6 +58,16 @@ namespace HomeScreen
                 Characters.Characters.AvailableCharacters[characterEnum].DisplayName,
                 characterEnum
             );
+            _characterCards.Add(character);
+        }
+
+        public void RemoveCharacters()
+        {
+            foreach (var characterCard in _characterCards)
+            {
+                Destroy(characterCard);
+            }
+            noRankedCharactersText.alpha = 1;
         }
 
         private void OnBack()
